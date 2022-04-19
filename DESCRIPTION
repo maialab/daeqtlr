@@ -1,0 +1,36 @@
+Package: daeqtlr
+Type: Package
+Title: DAEQTL Mapping
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Ramiro", family = "Magno",
+      email = "ramiro.magno@gmail.com",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0001-5226-3441")),
+    person(given = "Joana", family = "M Xavier",
+      email = "joana.xavier1@gmail.com",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-0702-6700")),
+    person(given = "Ana-Teresa", family = "Maia",
+      email = "maia.anateresa@gmail.com", role = "aut", 
+      comment = c(ORCID = "0000-0002-0454-9207")),
+    person("CINTESIS",
+    role = c("cph", "fnd"))
+    )
+Description: Differential allelic expression (DAE) can be treated as a
+    quantitative trait. Marker genotypes collected from the same set of
+    individuals can, in turn, be used in testing statistical associations with
+    DAE. This package provides routines for performing such a workflow, i.e.
+    differential allelic expression trait loci mapping.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Imports: 
+    cli,
+    data.table,
+    dplyr,
+    forcats,
+    magrittr,
+    readr,
+    rlang
