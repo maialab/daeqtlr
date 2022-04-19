@@ -8,6 +8,13 @@
 \description{
 Differential allelic expression (DAE) can be treated as a quantitative trait. Marker genotypes collected from the same set of individuals can, in turn, be used in testing statistical associations with DAE. This package provides routines for performing such a workflow, i.e. differential allelic expression trait loci mapping.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{http://maialab.org/daeqtlr}
+}
+
+}
 \author{
 \strong{Maintainer}: Ramiro Magno \email{ramiro.magno@gmail.com} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
 
