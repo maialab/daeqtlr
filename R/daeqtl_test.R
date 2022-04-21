@@ -17,14 +17,14 @@
 #'   vector refers to a sample that is heterozygous (\code{het}) for the
 #'   candidate SNP.
 #' @param dae_threshold An allelic expression (AE) threshold (in log-scale). A
-#'   sample having showing an absolute AE greater than `dae_threshold` is
-#'   considered "technically" \emph{differential allelic expressed}, meaning
-#'   that the imbalance observed is not below the limit of detection. Adjustment
-#'   made to this parameter should depend on the experimental assay sensitivity.
+#'   sample showing an absolute AE greater than `dae_threshold` is considered
+#'   "technically" \emph{differential allelic expressed}, meaning that the
+#'   imbalance observed is not below the limit of detection. Adjustment made to
+#'   this parameter should depend on the experimental assay sensitivity.
 #' @param min_n_hom Minimum number of samples in the homozygous group to be
-#'   considered elligible for statistical testing.
+#'   considered eligible for statistical testing.
 #' @param min_n_het Minimum number of samples in the heterozygous group to be
-#'   considered elligible for statistical testing.
+#'   considered eligible for statistical testing.
 #'
 #' @return A data frame of two columns:
 #' \describe{
@@ -55,9 +55,82 @@
 #' }
 #' }
 #'
+#' @examples
+#' #
+#' # Case 1
+#' #
+#' # The number of heterozygous samples (n = 1) does not meet the minimum
+#' # required (default is `min_n_het` = 2). Hence, no statistical test is
+#' # applied, the `pvalue` is `NA` and `case` is `1`.
+#' #
+#' daeqtl_test(ae_hom = c(0.3, 0.1, 1.3 , 1.5, 0.4),
+#'             ae_het = 0.3)
+#'
+#' # Now with a higher `min_n_het`.
+#' daeqtl_test(ae_hom = c(0.3, 0.1, 1.3, 1.5, 0.4),
+#'             ae_het = c(0.3, 2.1, 3.2),
+#'             min_n_het = 4L)
+#'
+#' #
+#' # Case 2
+#' #
+#' # The number of homozygous samples does not meet the minimum requirement
+#' # (default is `min_n_hom` = 2) and also the AE ratios are not either all
+#' # above or all below the DAE threshold (`dae_threshold`).
+#' #
+#' daeqtl_test(ae_hom = numeric(),
+#'             ae_het = c(0.3, 0.1, 1.3 , 1.5, 0.4, 0.59, 0.67, 0.89, 1.35))
+#'
+#' #
+#' # Case 3
+#' #
+#' # The number of homozygous samples does not meet the minimum requirement
+#' # (default is `min_n_hom` = 2) but the AE ratios are either all above or all
+#' # below the DAE threshold (default is `dae_threshold = log2(1.5)`).
+#' #
+#' daeqtl_test(ae_hom = numeric(),
+#'             ae_het = c(2.8, 3.1, 1.3 , 1.5, 2.3, 0.59, 0.67, 0.89, 1.35))
+#'
+#' # Same as previous example, but with the minimum possible value of
+#' # `dae_threshold` set, i.e. `0`.
+#' #
+#' daeqtl_test(ae_hom = numeric(),
+#'             ae_het = c(2.8, 3.1, 1.3 , 1.5, 2.3, 0.59, 0.67, 0.89, 1.35),
+#'             dae_threshold = 0)
+#'
+#' #
+#' # Case 4
+#' #
+#' # Both the number of homozygous and heterozygous samples are equal or
+#' # above the minima defined by `min_n_hom` and `min_n_het`. Hence, a
+#' # two-sample Wilcox test is applied to test the null hypothesis that the
+#' # absolute AE ratios for the heterozygous group is less than or equal to
+#' # those of the homozygous group.
+#' #
+#' # Example: Both groups show imbalance above zero, i.e. show preference for
+#' # the same allele. However, the imbalance magnitude of the heterozygous group
+#' # is clearly below that of the homozygous group, resulting in a
+#' # non-significant p-value.
+#' daeqtl_test(ae_hom = c(1.9, 2.1, 2 , 1.5, 1.4), ae_het = c(0.3, 0.6, 0.7))
+#'
+#' # Example: the heterozygous group clearly shows greater imbalance (greater
+#' # departure from zero) than the homozygous group, resulting in a significant
+#' # p-value.
+#' daeqtl_test(
+#'   ae_hom = c(0.1, 0.3, 0.2 , 0.21, 0.15),
+#'   ae_het = c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7)
+#' )
+#'
+#' # Example: the exact reverse of the previous example
+#' daeqtl_test(
+#'   ae_hom = c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7),
+#'   ae_het = c(0.1, 0.3, 0.2 , 0.21, 0.15)
+#' )
+#'
+#'
 #' @md
 #' @export
-daeqtlr_mapping <-
+daeqtl_test <-
   function(ae_hom,
            ae_het,
            dae_threshold = log2(1.5),
