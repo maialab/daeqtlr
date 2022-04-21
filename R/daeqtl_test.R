@@ -1,11 +1,15 @@
-#' DAEQTL mapping approach
+#' DAEQTL test
 #'
 #' @description
-#' This function implements daeqtlr's default mapping approach, i.e. the mapping
-#' of SNPs associated with DAE. The mapping approach here implemented takes into
-#' consideration the pattern of the allelic expression (AE) ratios' distribution
-#' displayed at each DAE SNP (depicted below), as this is dependent on the
-#' linkage disequilibrium between the DAE SNP and the candidate SNP.
+#' This function implements daeqtlr's default approach for testing the
+#' association between a candidate SNP zygosity and the allelic expression of a
+#' DAE SNP. The method takes into account the pattern of the allelic expression
+#' (AE) ratios' distribution displayed at each DAE SNP (depicted below), as this
+#' is dependent on the linkage disequilibrium between the DAE SNP and the
+#' candidate SNP. In some cases the requirements for application of this
+#' methodology are not met and no measure of statistical association
+#' significance is derived. These cases are depicted in the figure below, and
+#' further explained in the section Value.
 #'
 #' \if{html}{\figure{mapping_approach.svg}{Mapping approach}}
 #' \if{latex}{\figure{mapping_approach.png}{options: width=0.5in}}
@@ -63,13 +67,16 @@
 #' # required (default is `min_n_het` = 2). Hence, no statistical test is
 #' # applied, the `pvalue` is `NA` and `case` is `1`.
 #' #
-#' daeqtl_test(ae_hom = c(0.3, 0.1, 1.3 , 1.5, 0.4),
-#'             ae_het = 0.3)
+#' ae_hom <- c(0.3, 0.1, 1.3 , 1.5, 0.4)
+#' ae_het <- 0.3
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
-#' # Now with a higher `min_n_het`.
-#' daeqtl_test(ae_hom = c(0.3, 0.1, 1.3, 1.5, 0.4),
-#'             ae_het = c(0.3, 2.1, 3.2),
-#'             min_n_het = 4L)
+#' # Be stricter with the number of heterozygous samples, e.g. `min_n_het = 4L`.
+#' #
+#' ae_het <- c(0.3, 2.1, 3.2)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het, min_n_het = 4L)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
 #' #
 #' # Case 2
@@ -78,25 +85,24 @@
 #' # (default is `min_n_hom` = 2) and also the AE ratios are not either all
 #' # above or all below the DAE threshold (`dae_threshold`).
 #' #
-#' daeqtl_test(ae_hom = numeric(),
-#'             ae_het = c(0.3, 0.1, 1.3 , 1.5, 0.4, 0.59, 0.67, 0.89, 1.35))
+#' ae_hom <- numeric()
+#' ae_het <- c(0.3, 0.1, 1.3 , 1.5, 0.4, 0.59, 0.67, 0.89, 1.35)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
 #' #
 #' # Case 3
 #' #
 #' # The number of homozygous samples does not meet the minimum requirement
 #' # (default is `min_n_hom` = 2) but the AE ratios are either all above or all
-#' # below the DAE threshold (default is `dae_threshold = log2(1.5)`).
+#' # below the DAE threshold (default is `dae_threshold = log2(1.5)`). Hence, a
+#' # one-sample Wilcox test is applied to test the null hypothesis that the
+#' # AE ratios for the heterozygous group is significantly different from zero.
 #' #
-#' daeqtl_test(ae_hom = numeric(),
-#'             ae_het = c(2.8, 3.1, 1.3 , 1.5, 2.3, 0.59, 0.67, 0.89, 1.35))
-#'
-#' # Same as previous example, but with the minimum possible value of
-#' # `dae_threshold` set, i.e. `0`.
-#' #
-#' daeqtl_test(ae_hom = numeric(),
-#'             ae_het = c(2.8, 3.1, 1.3 , 1.5, 2.3, 0.59, 0.67, 0.89, 1.35),
-#'             dae_threshold = 0)
+#' ae_hom <- numeric()
+#' ae_het <- c(2.8, 3.1, 1.3 , 1.5, 2.3, 0.59, 0.67, 0.89, 1.35)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
 #' #
 #' # Case 4
@@ -111,22 +117,34 @@
 #' # the same allele. However, the imbalance magnitude of the heterozygous group
 #' # is clearly below that of the homozygous group, resulting in a
 #' # non-significant p-value.
-#' daeqtl_test(ae_hom = c(1.9, 2.1, 2 , 1.5, 1.4), ae_het = c(0.3, 0.6, 0.7))
+#' #
+#' ae_hom <- c(1.9, 2.1, 2 , 1.5, 1.4)
+#' ae_het <- c(0.3, 0.6, 0.7)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
+#'
+#' # Example: the exact reverse of the previous example.
+#' #
+#' ae_hom <- c(0.3, 0.6, 0.7)
+#' ae_het <- c(1.9, 2.1, 2 , 1.5, 1.4)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
 #' # Example: the heterozygous group clearly shows greater imbalance (greater
 #' # departure from zero) than the homozygous group, resulting in a significant
 #' # p-value.
-#' daeqtl_test(
-#'   ae_hom = c(0.1, 0.3, 0.2 , 0.21, 0.15),
-#'   ae_het = c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7)
-#' )
+#' #
+#' ae_hom <- c(0.1, 0.3, 0.2 , 0.21, 0.15)
+#' ae_het <- c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
-#' # Example: the exact reverse of the previous example
-#' daeqtl_test(
-#'   ae_hom = c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7),
-#'   ae_het = c(0.1, 0.3, 0.2 , 0.21, 0.15)
-#' )
-#'
+#' # Example: the exact reverse of the previous example.
+#' #
+#' ae_hom <- c(0.6, 0.8, 1.2, -1.5, -3, -2.5, -1, 2, 2.7)
+#' ae_het <- c(0.1, 0.3, 0.2 , 0.21, 0.15)
+#' daeqtl_test(ae_hom = ae_hom, ae_het = ae_het)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #'
 #' @md
 #' @export
