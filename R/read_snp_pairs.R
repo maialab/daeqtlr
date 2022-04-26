@@ -26,7 +26,7 @@ read_snp_pairs <- function(file, ...) {
       'candidate_snp',
       'chromosome',
       'dae_snp_position',
-      'candidate_snnp_position'
+      'candidate_snp_position'
     )
 
   col_types <-
