@@ -15,16 +15,16 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
     candidate_snp <- snp_pairs[[i, 'candidate_snp']]
     dae_snp <- snp_pairs[[i, 'dae_snp']]
 
-    if(dae_snp %is_not_in% snp_pairs) {
-      datatable::set(snp_pairs, i = i, j = 'pvalue', value = NA)
-      datatable::set(snp_pairs, i = i, j = 'case', value = 0L)
-      break
+    if(dae_snp %is_not_in% zygosity) {
+      data.table::set(snp_pairs, i = i, j = 'pvalue', value = NA)
+      data.table::set(snp_pairs, i = i, j = 'case', value = 0L)
+      next
     }
 
     if(dae_snp %is_not_in% ae) {
-      datatable::set(snp_pairs, i = i, j = 'pvalue', value = NA)
-      datatable::set(snp_pairs, i = i, j = 'case', value = 0L)
-      break
+      data.table::set(snp_pairs, i = i, j = 'pvalue', value = NA)
+      data.table::set(snp_pairs, i = i, j = 'case', value = 0L)
+      next
     }
 
     # `csnp_hom`: lgl indicating homozygous samples for the candidate snp
@@ -42,8 +42,7 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
     # `ae_het`: dbl with allelic ratios of heterozygous samples (candidate snp)
     ae_het <- as.numeric(ae[dae_snp][, 1 := NULL][, dsnp_het & csnp_het, with = FALSE])
 
-
-    df <- fn(ae_hom = ae_hom, ae_het = ae_het, ...)
+    df <- fn(ae_hom = ae_hom[!is.na(ae_hom)], ae_het = ae_het[!is.na(ae_het)], ...)
     for (col in names(df)) data.table::set(snp_pairs, i = i, j = col, value = df[[col]])
   }
 
