@@ -18,7 +18,7 @@
 read_snp_genotypes <- function(file, sep = ',', header = TRUE, ...) {
 
   genotypes <- data.table::fread(input = file, sep = sep, header = header, ...)
-  data.table::setnames(genotypes, "V1", "snp")
+  data.table::setnames(genotypes, 1L, "snp")
   data.table::setkeyv(genotypes, 'snp')
 
   # First column is the SNP identifier, remaining columns are samples.
