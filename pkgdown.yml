@@ -1,8 +1,9 @@
 pandoc: 2.7.3
 pkgdown: 2.0.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2022-04-27T14:41Z
+articles:
+  daeqtlr: daeqtlr.html
+last_built: 2022-04-30T22:17Z
 urls:
   reference: https://maialab.org/daeqtlr/reference
   article: https://maialab.org/daeqtlr/articles

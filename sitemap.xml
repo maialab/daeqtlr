@@ -10,6 +10,12 @@
     <loc>https://maialab.org/daeqtlr/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://maialab.org/daeqtlr/articles/daeqtlr.html</loc>
+  </url>
+  <url>
+    <loc>https://maialab.org/daeqtlr/articles/index.html</loc>
+  </url>
+  <url>
     <loc>https://maialab.org/daeqtlr/authors.html</loc>
   </url>
   <url>
@@ -29,6 +35,9 @@
   </url>
   <url>
     <loc>https://maialab.org/daeqtlr/reference/daeqtlr-package.html</loc>
+  </url>
+  <url>
+    <loc>https://maialab.org/daeqtlr/reference/daeqtlr_example.html</loc>
   </url>
   <url>
     <loc>https://maialab.org/daeqtlr/reference/index.html</loc>
