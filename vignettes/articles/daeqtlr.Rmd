@@ -1,0 +1,18 @@
+---
+title: "Introduction to daeqtlr"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(daeqtlr)
+```
+
+The goal of `{daeqtlr}` is to provide a minimum set of routines to perform
+DAEQTL mapping.
+
