@@ -19,10 +19,18 @@
 #' @export
 read_snp_zygosity <- function(file, sep = ',', header = TRUE, ...) {
 
-  genotypes <- read_snp_genotypes(file = file, sep = sep, header = header, ...)
+  zygosity <- data.table::fread(input = file, sep = sep, header = header, ...)
+  data.table::setnames(zygosity, 1L, "snp")
+  data.table::setkeyv(zygosity, 'snp')
 
-  # Modified by reference, i.e., `genotypes` and `zygosity` are the same dt.
-  zygosity <- as_zygous(genotypes)
+  # First column is the SNP identifier, remaining columns are samples.
+  cols <- colnames(zygosity)[-1]
 
-  return(zygosity)
+  # Convert genotype strings to factors
+  for (j in cols)
+    data.table::set(zygosity,
+                    j = j,
+                    value = factor(zygosity[[j]], levels = c('hom', 'het')))
+
+  zygosity
 }
