@@ -40,5 +40,8 @@ read_snp_pairs <- function(file, ...) {
       ...
     )
 
+  data.table::setkeyv(snp_pairs, colnames(snp_pairs)[1:3])
+  data.table::setorderv(snp_pairs, c('chromosome', 'dae_snp_position', 'dae_snp'))
+
   snp_pairs
 }
