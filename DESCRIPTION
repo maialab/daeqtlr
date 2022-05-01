@@ -34,7 +34,8 @@ Imports:
     ggplot2,
     magrittr,
     readr,
-    rlang
+    rlang,
+    tibble
 URL: http://maialab.org/daeqtlr
 Suggests: 
     rmarkdown
