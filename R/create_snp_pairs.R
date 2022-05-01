@@ -1,3 +1,21 @@
+#' Create a table of SNP pairs
+#'
+#' This function creates a data table of SNP pairs to be used in DAEQTL mapping.
+#' Essentially, this function looks for neighbouring SNPs, i.e. within a
+#' genomic window (specified with `window_size`) and exports a file with those
+#' SNP pairs, in long format.
+#'
+#' @param file A path to a file where the newly created data table of SNP pairs
+#' is to be exported.
+#' @param snp_table A data table of SNP to be used in DAEQTL mapping. Typically,
+#' this object is created with [create_snp_table()].
+#' @param window_size A genomic window size, in base pairs. Default is 500 kb.
+#' @param verbose Whether to be chatty about this function's progress.
+#'
+#' @return This function is run for its side effect: creating the file indicated
+#' in `file`.
+#'
+#' @md
 #' @importFrom rlang .data
 #' @export
 create_snp_pairs <-
