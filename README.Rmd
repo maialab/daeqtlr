@@ -19,9 +19,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of `{daeqtlr}` is to perform differential allelic expression trait loci (DAEQTL) mapping.
+The goal of `{daeqtlr}` is to perform differential allelic expression trait loci
+(DAEQTL) mapping.
 
-Differential allelic expression (DAE) can be treated as a quantitative trait. Marker genotypes collected from the same set of individuals can, in turn, be used in testing statistical associations with DAE. This package provides routines for performing such a workflow, i.e. DAEQTL mapping.
+Differential allelic expression (DAE) can be treated as a quantitative trait.
+Marker genotypes collected from the same set of individuals can, in turn, be
+used in testing statistical associations with DAE. This package provides
+routines for performing such a workflow, i.e. DAEQTL mapping.
 
 ## Installation
 
@@ -34,4 +38,24 @@ remotes::install_github("maialab/daeqtlr")
 
 ## Usage
 
-Coming soon. For the moment check out the documented functions at [maialab.org/daeqtlr](http://maialab.org/daeqtlr).
+Here's a quick example on how to perform DAEQTL mapping with `{daeqtlr}`. For
+more details about this example read `vignette("daeqtlr")`.
+
+```{r}
+library(daeqtlr)
+
+# SNP pairs to be tested for statistical association
+snp_pairs <- read_snp_pairs(file = daeqtlr_example("snp_pairs.csv"))
+
+# Zygosity levels (homozygous or heterozygous) for genotyped SNPs
+zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
+
+# Allelic expression (AE) ratios of DAE SNPs
+ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
+
+# `snp_pairs` is updated by reference
+daeqtl_mapping(snp_pairs = snp_pairs, zygosity = zygosity, ae = ae)
+
+# Here's the first 30 SNP pairs tested
+snp_pairs[1:30, -c('dae_snp_position', 'candidate_snp_position')]
+```
