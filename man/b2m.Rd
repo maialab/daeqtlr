@@ -7,10 +7,10 @@
 b2m(b, base = 2)
 }
 \arguments{
+\item{b}{A numeric vector of Beta-values.}
+
 \item{base}{The base with respect to which logarithms are computed. Defaults
 to \code{base = 2}.}
-
-\item{m}{A numeric vector of Beta-values.}
 }
 \description{
 This function converts Beta-values to M-values.

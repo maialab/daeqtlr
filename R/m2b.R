@@ -26,7 +26,7 @@ m2b <- function(m, base = 2) {
 #'
 #' This function converts Beta-values to M-values.
 #'
-#' @param m A numeric vector of Beta-values.
+#' @param b A numeric vector of Beta-values.
 #' @param base The base with respect to which logarithms are computed. Defaults
 #'   to `base = 2`.
 #'
