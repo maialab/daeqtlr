@@ -4,6 +4,38 @@ ae_lim <- function(ae) {
 
 }
 
+#' DAEQTL plot
+#'
+#' A simple wrapper around a ggplot2 plot showing allelic expression ratios for
+#' two groups of samples: homozygous and heterozygous. This is a handy function
+#' to quickly inspect the data underlying each DAEQTL mapping test.
+#'
+#' @param ae_hom Numeric vector of AE ratios of the DAE SNP. Each element of the
+#'   vector refers to a sample that is homozygous (\code{hom}) for the candidate
+#'   SNP.
+#' @param ae_het Numeric vector of AE ratios of the DAE SNP. Each element of the
+#'   vector refers to a sample that is heterozygous (\code{het}) for the
+#'   candidate SNP.
+#' @param dae_threshold An allelic expression (AE) threshold (in log-scale). A
+#'   sample showing an absolute AE greater than `dae_threshold` is considered
+#'   "technically" \emph{differential allelic expressed}, meaning that the
+#'   imbalance observed is not below the limit of detection. Adjustment made to
+#'   this parameter should depend on the experimental assay sensitivity.
+#' @param min_n_hom Minimum number of samples in the homozygous group to be
+#'   considered eligible for statistical testing.
+#' @param min_n_het Minimum number of samples in the heterozygous group to be
+#'   considered eligible for statistical testing.
+#' @param dae_threshold_linetype Line type for the DAE threshold. See [Line
+#'   type](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#lines) for
+#'   options.
+#' @param xlab Title of the x-axis.
+#' @param ylab Title of the y-axis.
+#'
+#' @examples
+#' ae_hom <- c(1.9, 2.1, 2 , 1.5, 1.4)
+#' ae_het <- c(0.3, 0.6, 0.7)
+#' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
+#' @md
 #' @export
 daeqtl_plot <- function(ae_hom,
                         ae_het,
