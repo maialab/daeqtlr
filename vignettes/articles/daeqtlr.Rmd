@@ -1,5 +1,9 @@
 ---
 title: "Introduction to daeqtlr"
+output: html_document
+notes-after-punctuation: false
+bibliography: "`r system.file('references.bib', package = 'daeqtlr')`"
+csl: "`r system.file('nature.csl', package = 'daeqtlr')`"
 ---
 
 ```{r, include = FALSE}
@@ -7,12 +11,147 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(daeqtlr)
 ```
 
-```{r setup}
+```{r setup, echo=FALSE}
 library(daeqtlr)
 ```
 
 The goal of `{daeqtlr}` is to provide a minimum set of routines to perform
 DAEQTL mapping.
 
+In this vignette we'll show you how to perform DAEQTL mapping using an example
+data set. But before that let's recap some key concepts underlying this
+analysis.
+
+## Concepts
+
+
+## Data
+
+`{daeqtlr}` is bundled with an example data set that consists of three files:
+
+- `snp_pairs.csv`: A table of SNP pairs to be tested for association.
+- `zygosity.csv`: A table providing the zygosity levels (homozygous or heterozygous) for each SNP/biological sample combination.
+- `ae.csv`: Allelic expression (AE) ratios for each DAE SNP / biological sample combination.
+
+To easily read the bundled files you can use the function `daeqtlr_example()` to
+retrieve the path to each file, e.g. the path to `snp_pairs.csv` is:
+
+```{r}
+daeqtlr_example("snp_pairs.csv")
+```
+
+To import the data into R we provide a set of `read_*` functions:
+
+```{r}
+snp_pairs <- read_snp_pairs(file = daeqtlr_example("snp_pairs.csv"))
+zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
+ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
+```
+
+### SNP pairs
+
+The SNP pairs table indicates the pairs of SNPs (DAE SNP and candidate SNP) that
+will be tested for statistical association. Each row is for a pair. If this is
+not your starting point and you need to assemble this set of pairs first from
+a list of SNP, namely by looking for neighboring SNPs by genomic window, please
+read `vignette("snp-pairs")`.
+
+The function `read_snp_pairs()` expects a path to a CSV file containing five
+columns:
+
+1. `dae_snp`: The id of the DAE SNP.
+2. `candidate_snp`: The id of the candidate DAEQTL SNP, or simply candidate SNP.
+3. `chromosome`: The chromosome name.
+4. `dae_snp_position`: The genomic position of the DAE SNP.
+5. `candidate_snp_position`: The genomic position of the candidate SNP.
+
+These columns are expected in this order. The actual column names in the header
+of the file are ignored and imported into R as indicated above.
+`read_snp_pairs()` will read the file with `data.table::fread()` and return a
+data table object.
+
+In this example data set, all SNPs have dummy identifiers as should be clear
+from the non-valid rs identifiers: note the inclusion of a character `"X"`
+between the `"rs"` prefix and the SNP number.
+
+```{r}
+# First 10 pairs
+snp_pairs[1:10, ]
+
+# Total number of pairs
+nrow(snp_pairs)
+
+# Chromosomes
+unique(snp_pairs$chromosome)
+```
+
+There are `r nrow(snp_pairs)` pairs, scattered across
+`r length(unique(snp_pairs$chromosome))` chromosomes:
+`r knitr::combine_words(unique(snp_pairs$chromosome))`.
+This means that the DAEQTL mapping will consist (potentially) of
+`r nrow(snp_pairs)` statistical tests.
+
+
+### Zygosity
+
+The `zygosity` data table consists of the zygosity levels for the SNP / sample
+combination. Samples are also dummy and are therefore generically named `"s01"`,
+`"s02"`, etc. The values `"hom"` and `"het"` stand for homozygous and
+heterozygous, respectively.
+
+```{r}
+# First 10 SNPs, first 4 samples (first column is the SNP identifier)
+zygosity[1:10, 1:5]
+
+# Number of genotyped (determined zygosity) SNPs
+nrow(zygosity)
+```
+
+### Allelic expression ratios
+
+The `ae` data table contains the log2 of the ratio of one of the alleles over
+the other. This metric is also known as the M-value @Du.BB.2010. An alternative
+metric is the Beta-value, i.e. the relative expression of one allele. In this
+example data set, the `ae` data table comprises M-values because it has been
+shown to have more desirable properties for statistical testing @Du.BB.2010.
+However, if you find Beta-values more intuitive and hence preferable for
+reporting results you may use the function `m2b()` for conversion (and `b2m()`
+for the reverse operation).
+
+M-values can vary between `-Inf` and `Inf`, where zero means balanced allelic
+expression.
+
+```{r}
+# First 4 samples (first column is the SNP identifier)
+ae[, 1:5]
+
+# Number of SNPs with measured allelic expression
+# These are the DAE SNPs
+nrow(ae)
+```
+
+## DAEQTL mapping
+
+To perform DAEQTL mapping you use the function `daeqtl_mapping()`. The P-value
+associated with the statistical association will be appended as a new column
+to the data table `snp_pairs` by reference, i.e. the `snp_pairs` is changed
+in-place, no extra copy is created. Here we associate a new variable
+`mapping_results` with the output of `daeqtl_mapping()` but it refers to the
+same data in memory as the new updated `snp_pairs` data table.
+
+```{r}
+# `snp_pairs` is updated by reference, so `snp_pairs` and `mapping_results`
+# refer to the same object in memory.
+mapping_results <- daeqtl_mapping(snp_pairs = snp_pairs, zygosity = zygosity, ae = ae)
+
+# Omiting here the columns `dae_snp_position` and `candidate_snp_position`
+# and showing only the first 30 pairs for brevity.
+mapping_results[1:30, -c('dae_snp_position', 'candidate_snp_position')]
+```
+
+## References
+
+<!-- References will be automatically included here -->
