@@ -113,10 +113,10 @@ nrow(zygosity)
 ### Allelic expression ratios
 
 The `ae` data table contains the log2 of the ratio of one of the alleles over
-the other. This metric is also known as the M-value @Du.BB.2010. An alternative
+the other. This metric is also known as the M-value [@Du.BB.2010]. An alternative
 metric is the Beta-value, i.e. the relative expression of one allele. In this
 example data set, the `ae` data table comprises M-values because it has been
-shown to have more desirable properties for statistical testing @Du.BB.2010.
+shown to have more desirable properties for statistical testing [@Du.BB.2010].
 However, if you find Beta-values more intuitive and hence preferable for
 reporting results you may use the function `m2b()` for conversion (and `b2m()`
 for the reverse operation).
