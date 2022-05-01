@@ -46,7 +46,7 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
     for (col in names(df)) data.table::set(snp_pairs, i = i, j = col, value = df[[col]])
   }
 
-  return(snp_pairs[])
+  return(invisible(snp_pairs[]))
 }
 
 #' DAEQTL mapping
