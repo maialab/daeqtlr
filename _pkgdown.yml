@@ -12,3 +12,31 @@ authors:
   CINTESIS:
     href: https://cintesis.eu/
     html: <img src='https://maialab.org/daeqtlr/reference/figures/cintesis.svg' height=24>
+
+reference:
+- title: "DAEQTL mapping"
+  contents:
+  - daeqtl_mapping
+  - daeqtl_test
+  - daeqtl_plot
+- title: "Importing utilities"
+  contents:
+  - read_candidate_snps
+  - read_dae_snps
+  - read_snp_pairs
+  - read_ae_ratios
+  - read_snp_genotypes
+  - read_snp_gen_positions
+  - read_snp_zygosity
+- title: "Wrangling utilities"
+  contents:
+  - as_zygous
+  - create_snp_table
+  - create_snp_pairs
+- title: "M-values and Beta-values"
+  contents:
+  - m2b
+  - b2m
+- title: "Other utilites"
+  contents:
+  - daeqtlr_example
