@@ -27,6 +27,18 @@ analysis.
 
 ## Concepts
 
+- DAE SNP: SNP on which the allelic expression (AE) ratio is measured. AE is the
+quantitative trait used as one of the variables in the statistical association
+test when performing DAEQTL mapping.
+
+- Candidate SNP: SNP candidate for DAE quantitative trait loci (DAEQTL). These
+are the SNPs whose zygosity level is used as the other variable in the
+statistical association test.
+
+- Zygosity: degree to which both copies of a loci have the same genetic
+sequence. If both copies are the same, then the loci are homozygous, if they are
+different, the loci are heterozygous.
+
 
 ## Data
 
@@ -145,7 +157,9 @@ same data in memory as the new updated `snp_pairs` data table.
 ```{r}
 # `snp_pairs` is updated by reference, so `snp_pairs` and `mapping_results`
 # refer to the same object in memory.
-mapping_results <- daeqtl_mapping(snp_pairs = snp_pairs, zygosity = zygosity, ae = ae)
+mapping_results <- daeqtl_mapping(snp_pairs = snp_pairs,
+                                  zygosity = zygosity,
+                                  ae = ae)
 
 # Omiting here the columns `dae_snp_position` and `candidate_snp_position`
 # and showing only the first 30 pairs for brevity.
