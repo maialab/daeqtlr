@@ -2,7 +2,10 @@
 #'
 #' This function reads in SNP genotypes from a text file. The data is expected
 #' to be in tabular format. First column is expected to be the locus identity
-#' (e.g. SNP identifier), and remaining columns are the samples.
+#' (e.g. SNP identifier), and remaining columns are the samples. First column is
+#' expected to be the locus identity (e.g. SNP identifier), and remaining
+#' columns are the samples. The genotypes are expected to be encoded as `"AA"`,
+#' `"AB"`, `"BA"` or `"BB"`.
 #'
 #' @param file A path to file.
 #' @param sep The separator between columns.

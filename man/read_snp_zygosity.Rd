@@ -21,9 +21,9 @@ for heterozygous. Each row is for a locus. The locus identity is indicated
 in the first column and named \code{snp}. Remaining columns are samples.
 }
 \description{
-This function reads in SNP genotypes from a text file and converts them to
-zygosity levels. The data is expected to be in tabular format. First column
-is expected to be the locus identity (e.g. SNP identifier), and remaining
-columns are the samples. The genotypes are expected to be encoded as \code{"AA"},
-\code{"AB"}, \code{"BA"} or \code{"BB"}.
+This function reads in SNP zygosity levels from a text file. The data is
+expected to be in tabular format. First column is expected to be the locus
+identity (e.g. SNP identifier), and remaining columns are the samples. The
+genotypes are expected to be encoded as \code{"hom"} or \code{"het"}, for homozygous
+and heterozygous, respectively.
 }

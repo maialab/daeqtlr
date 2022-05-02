@@ -1,10 +1,10 @@
 #' Import SNP zygosity
 #'
-#' This function reads in SNP genotypes from a text file and converts them to
-#' zygosity levels. The data is expected to be in tabular format. First column
-#' is expected to be the locus identity (e.g. SNP identifier), and remaining
-#' columns are the samples. The genotypes are expected to be encoded as `"AA"`,
-#' `"AB"`, `"BA"` or `"BB"`.
+#' This function reads in SNP zygosity levels from a text file. The data is
+#' expected to be in tabular format. First column is expected to be the locus
+#' identity (e.g. SNP identifier), and remaining columns are the samples. The
+#' genotypes are expected to be encoded as `"hom"` or `"het"`, for homozygous
+#' and heterozygous, respectively.
 #'
 #' @param file A path to file.
 #' @param sep The separator between columns.
