@@ -3,7 +3,8 @@ pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   daeqtlr: daeqtlr.html
-last_built: 2022-05-03T07:39Z
+  snp-pairs: snp-pairs.html
+last_built: 2022-05-03T13:10Z
 urls:
   reference: https://maialab.org/daeqtlr/reference
   article: https://maialab.org/daeqtlr/articles

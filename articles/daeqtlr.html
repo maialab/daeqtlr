@@ -41,6 +41,12 @@
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/snp-pairs.html">Preparing the set of SNP pairs for DAEQTL mapping</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -108,7 +114,7 @@
 <div class="section level3">
 <h3 id="snp-pairs">SNP pairs<a class="anchor" aria-label="anchor" href="#snp-pairs"></a>
 </h3>
-<p>The SNP pairs table indicates the pairs of SNPs (DAE SNP and candidate SNP) that will be tested for statistical association. Each row is for a pair. If this is not your starting point and you need to assemble this set of pairs first from a list of SNP, namely by looking for neighboring SNPs by genomic window, please read <code>vignette("snp-pairs")</code>.</p>
+<p>The SNP pairs table indicates the pairs of SNPs (DAE SNP and candidate SNP) that will be tested for statistical association. Each row is for a pair. If this is not your starting point and you need to assemble this set of pairs first from a list of SNP, namely by looking for neighboring SNPs by genomic window, please read <code><a href="../articles/snp-pairs.html">vignette("snp-pairs")</a></code>.</p>
 <p>The function <code><a href="../reference/read_snp_pairs.html">read_snp_pairs()</a></code> expects a path to a CSV file containing five columns:</p>
 <ol style="list-style-type: decimal">
 <li>
