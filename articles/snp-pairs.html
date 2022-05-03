@@ -44,6 +44,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">From genotypes to zygosity</a>
     <a class="dropdown-item" href="../articles/snp-pairs.html">Preparing the set of SNP pairs for DAEQTL mapping</a>
   </div>
 </li>
@@ -218,7 +219,7 @@
 
 <span class="co"># Determines SNP pairs and writes them to a file</span>
 <span class="fu"><a href="../reference/create_snp_pairs.html">create_snp_pairs</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">path</span>, snp_table <span class="op">=</span> <span class="va">snp_table</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; [1] "/tmp/RtmpwFA8sw/snp_pairs.csv"</span>
+<span class="co">#&gt; [1] "/tmp/RtmpwyDRd1/snp_pairs.csv"</span>
 
 <span class="co"># Read back in the generated `snp_pairs`</span>
 <span class="va">snp_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_snp_pairs.html">read_snp_pairs</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">path</span><span class="op">)</span>
