@@ -32,7 +32,7 @@ to quickly inspect the data underlying each DAEQTL mapping test."><!-- mathjax -
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">From genotypes to zygosity</a>
-    <a class="dropdown-item" href="../articles/snp-pairs.html">Preparing the set of SNP pairs for DAEQTL mapping</a>
+    <a class="dropdown-item" href="../articles/snp-pairs.html">Assembling SNP pairs for DAEQTL mapping</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -72,7 +72,8 @@ to quickly inspect the data underlying each DAEQTL mapping test.</p>
   min_n_het <span class="op">=</span> <span class="fl">2L</span>,
   dae_threshold_linetype <span class="op">=</span> <span class="st">"dashed"</span>,
   xlab <span class="op">=</span> <span class="st">"Candidate SNP zygosity"</span>,
-  ylab <span class="op">=</span> <span class="st">"DAE SNP allelic expression (log-ratio)"</span>
+  ylab <span class="op">=</span> <span class="st">"DAE SNP allelic expression (log-ratio)"</span>,
+  ylim <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -105,6 +106,8 @@ options.</p></dd>
 <dd><p>Title of the x-axis.</p></dd>
 <dt>ylab</dt>
 <dd><p>Title of the y-axis.</p></dd>
+<dt>ylim</dt>
+<dd><p>A two element vector specifying the y-axis limits.</p></dd>
 </dl></div>
 
     <div class="section level2">
