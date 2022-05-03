@@ -44,9 +44,15 @@ locus is homozygous, if they are different, the loci are heterozygous.
 
 `{daeqtlr}` is bundled with an example data set that consists of three files:
 
-- `snp_pairs.csv`: A table of SNP pairs to be tested for association.
-- `zygosity.csv`: A table providing the zygosity levels (homozygous or heterozygous) for each SNP/biological sample combination.
-- `ae.csv`: Allelic expression (AE) ratios for each DAE SNP / biological sample combination.
+- `snp_pairs.csv`: A table of SNP pairs to be tested for association. Check out
+`vignette('snp-pairs')` if you need to assemble this data from SNPs and their
+genomic annotation.
+- `zygosity.csv`: A table providing the zygosity levels (homozygous or
+heterozygous) for each SNP/biological sample combination. Check out
+`vignette('genotypes-to-zygosity')` if you have genotypes and need to convert
+them to zygosity levels.
+- `ae.csv`: Allelic expression (AE) ratios for each DAE SNP / biological sample
+combination.
 
 To easily read the bundled files you can use the function `daeqtlr_example()` to
 retrieve the path to each file, e.g. the path to `snp_pairs.csv` is:

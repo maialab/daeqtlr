@@ -1,0 +1,29 @@
+---
+title: "From genotypes to zygosity"
+output: html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(daeqtlr)
+```
+
+Here is how to convert your genotypes to zygosity levels:
+
+1. Read in the genotypes with `read_snp_genotypes()`.
+2. Convert the returned data table by `read_snp_genotypes()` to zygosity levels
+with `as_zygous()`.
+
+```{r}
+# Read in the genotypes
+genotypes <- read_snp_genotypes(file = daeqtlr_example('genotypes.csv'))
+genotypes[1:10, 1:16]
+
+# Convert to zygosity levels
+zygosity <- as_zygous(genotypes)
+
+zygosity[1:10, 1:16]
+```
