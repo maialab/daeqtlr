@@ -12,7 +12,8 @@ daeqtl_plot(
   min_n_het = 2L,
   dae_threshold_linetype = "dashed",
   xlab = "Candidate SNP zygosity",
-  ylab = "DAE SNP allelic expression (log-ratio)"
+  ylab = "DAE SNP allelic expression (log-ratio)",
+  ylim = NULL
 )
 }
 \arguments{
@@ -42,6 +43,8 @@ options.}
 \item{xlab}{Title of the x-axis.}
 
 \item{ylab}{Title of the y-axis.}
+
+\item{ylim}{A two element vector specifying the y-axis limits.}
 }
 \description{
 A simple wrapper around a ggplot2 plot showing allelic expression ratios for

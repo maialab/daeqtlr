@@ -1,5 +1,6 @@
 ae_lim <- function(ae) {
 
+  ae <- ae[is.finite(ae)]
   ceiling(max(max(abs(ae)), 1))
 
 }
@@ -30,12 +31,14 @@ ae_lim <- function(ae) {
 #'   options.
 #' @param xlab Title of the x-axis.
 #' @param ylab Title of the y-axis.
+#' @param ylim A two element vector specifying the y-axis limits.
 #'
 #' @examples
 #' ae_hom <- c(1.9, 2.1, 2 , 1.5, 1.4)
 #' ae_het <- c(0.3, 0.6, 0.7)
 #' daeqtl_plot(ae_hom = ae_hom, ae_het = ae_het)
 #' @md
+#' @importFrom rlang .data
 #' @export
 daeqtl_plot <- function(ae_hom,
                         ae_het,
@@ -44,7 +47,8 @@ daeqtl_plot <- function(ae_hom,
                         min_n_het = 2L,
                         dae_threshold_linetype = 'dashed',
                         xlab = 'Candidate SNP zygosity',
-                        ylab = 'DAE SNP allelic expression (log-ratio)') {
+                        ylab = 'DAE SNP allelic expression (log-ratio)',
+                        ylim = NULL) {
 
   n_hom <- length(ae_hom)
   n_het <- length(ae_het)
@@ -54,14 +58,15 @@ daeqtl_plot <- function(ae_hom,
 
   tbl <-
     tibble::tibble(zygosity = zygosity,
-                   ae = ae)
+                   ae = ae) %>%
+    dplyr::filter(is.finite(.data$ae))
 
-  y_lim <- ae_lim(ae)
+  ylim <- `if`(is.null(ylim), c(-ae_lim(ae), ae_lim(ae)), ylim)
 
   ggplot2::ggplot(data = tbl, mapping = ggplot2::aes(x = zygosity, y = ae)) +
     ggplot2::scale_x_discrete(drop = FALSE) + # ensures all levels are kept
-    ggplot2::geom_point() +
-    ggplot2::ylim(-y_lim, y_lim) +
+    ggbeeswarm::geom_beeswarm(na.rm = TRUE) +
+    ggplot2::ylim(ylim) +
     ggplot2::geom_hline(yintercept = c(-dae_threshold, dae_threshold), linetype = dae_threshold_linetype) +
     ggplot2::xlab(xlab) +
     ggplot2::ylab(ylab)
