@@ -12,6 +12,8 @@ Differential allelic expression (DAE) can be treated as a quantitative trait. Ma
 Useful links:
 \itemize{
   \item \url{http://maialab.org/daeqtlr}
+  \item \url{https://github.com/maialab/daeqtlr}
+  \item Report bugs at \url{https://github.com/maialab/daeqtlr/issues}
 }
 
 }

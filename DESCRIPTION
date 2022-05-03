@@ -36,6 +36,7 @@ Imports:
     readr,
     rlang,
     tibble
-URL: http://maialab.org/daeqtlr
+URL: http://maialab.org/daeqtlr, https://github.com/maialab/daeqtlr
+BugReports: https://github.com/maialab/daeqtlr/issues
 Suggests: 
     rmarkdown
