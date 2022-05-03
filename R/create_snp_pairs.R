@@ -3,7 +3,8 @@
 #' This function creates a data table of SNP pairs to be used in DAEQTL mapping.
 #' Essentially, this function looks for neighbouring SNPs, i.e. within a
 #' genomic window (specified with `window_size`) and exports a file with those
-#' SNP pairs, in long format.
+#' SNP pairs, in long format. Check the `vignette('snp-pairs')` to understand
+#' when to use this function.
 #'
 #' @param file A path to a file where the newly created data table of SNP pairs
 #' is to be exported.

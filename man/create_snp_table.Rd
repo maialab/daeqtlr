@@ -26,5 +26,6 @@ a DAE SNP or a DAEQTL candidate SNP: columns \code{is_dae_snp} and
 \code{is_candidate_snp}.
 
 The returned data frame is useful as an intermediate data structure of the
-workflow, namely when looking for candidate neighbouring SNPs.
+workflow, namely when looking for candidate neighbouring SNPs. Check the
+\code{vignette('snp-pairs')} to understand when to use this function.
 }

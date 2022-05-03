@@ -1,0 +1,72 @@
+---
+title: "Preparing the set of SNP pairs for DAEQTL mapping"
+output: html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(daeqtlr)
+```
+
+If your starting point for DAEQTL mapping is not the triad of the three data
+objects introduced in `vignette('daeqtlr')` and you need to assemble the set of
+SNP pairs for DAEQTL testing first, then this vignette is for you.
+
+Here we show how to assemble a table of SNP pairs starting from:
+
+- a list of DAE SNPs
+- a list of candidate SNPs
+- genomic positional annotation for those SNPs
+
+Let us read in the three data sets above from the example files bundled with
+this `{daeqtlr}`:
+
+```{r}
+dae_snps <- read_dae_snps(file = daeqtlr_example("dae_snps.txt"))
+dae_snps[1:10, ]
+
+candidate_snps <-
+  read_candidate_snps(file = daeqtlr_example("candidate_snps.txt"))
+candidate_snps[1:10, ]
+
+snp_gen_positions <-
+  read_snp_gen_positions(file = daeqtlr_example("snp_gen_positions.csv"))
+snp_gen_positions[1:10, ]
+```
+
+We start by creating an intermediate data table (`snp_table`) with all the SNPs
+involved and their genomic positions, as well as the indication of who is a DAE
+SNP and who is a candidate SNP (they can be both). For that we use the function
+`create_snp_table()`:
+
+```{r}
+snp_table <-
+  create_snp_table(snp_gen_pos = snp_gen_positions,
+                   dae_snps = dae_snps,
+                   candidate_snps = candidate_snps)
+snp_table
+```
+
+To create the set of SNP pairs, we use the function `create_snp_pairs()` that
+takes in the `snp_table`. Essentially, the `create_snp_pairs()` searches within
+a genomic neighborhood of each DAE SNP for other SNPs marked as candidate SNPs.
+This genomic neighborhood is specified via a genomic window size centered on
+the DAE SNP. The window size defaults to 500 kb (`window_size = 500000L`).
+
+```{r}
+# Path to the temporary file snp_pairs.csv
+path <- file.path(tempdir(), 'snp_pairs.csv')
+
+# Determines SNP pairs and writes them to a file
+create_snp_pairs(file = path, snp_table = snp_table, verbose = FALSE)
+
+# Read back in the generated `snp_pairs`
+snp_pairs <- read_snp_pairs(file = path)
+snp_pairs
+```
+
+And there you have it, the SNP pairs needed for DAEQTL mapping as explained in
+`vignette('daeqtlr')`.

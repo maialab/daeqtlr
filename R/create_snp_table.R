@@ -7,7 +7,8 @@
 #' \code{is_candidate_snp}.
 #'
 #' The returned data frame is useful as an intermediate data structure of the
-#' workflow, namely when looking for candidate neighbouring SNPs.
+#' workflow, namely when looking for candidate neighbouring SNPs. Check the
+#' `vignette('snp-pairs')` to understand when to use this function.
 #'
 #' @param snp_gen_pos A data frame of three columns: \code{snp},
 #'   \code{chromosome} and \code{position}.
