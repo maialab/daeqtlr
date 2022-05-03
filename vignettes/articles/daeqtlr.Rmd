@@ -29,16 +29,16 @@ analysis.
 
 - DAE SNP: SNP on which the allelic expression (AE) ratio is measured. AE is the
 quantitative trait used as one of the variables in the statistical association
-test when performing DAEQTL mapping.
+test when performing DAEQTL mapping. AE ratios are only sensible for DAE SNPs
+that are heterozygous.
 
 - Candidate SNP: SNP candidate for DAE quantitative trait loci (DAEQTL). These
 are the SNPs whose zygosity level is used as the other variable in the
 statistical association test.
 
-- Zygosity: degree to which both copies of a loci have the same genetic
-sequence. If both copies are the same, then the loci are homozygous, if they are
-different, the loci are heterozygous.
-
+- Zygosity: degree to which both copies of a locus in two homologous chromosomes
+have the same genetic sequence or not. If both copies are the same, then the
+locus is homozygous, if they are different, the loci are heterozygous.
 
 ## Data
 
@@ -115,34 +115,47 @@ combination. Samples are also dummy and are therefore generically named `"s01"`,
 heterozygous, respectively.
 
 ```{r}
-# First 10 SNPs, first 4 samples (first column is the SNP identifier)
-zygosity[1:10, 1:5]
+# First 10 SNPs, first 15 samples (first column is the SNP identifier)
+zygosity[1:10, 1:16]
 
 # Number of genotyped (determined zygosity) SNPs
 nrow(zygosity)
 ```
 
-### Allelic expression ratios
+### Allelic expression ratios (M-values)
 
-The `ae` data table contains the log2 of the ratio of one of the alleles over
-the other. This metric is also known as the M-value [@Du.BB.2010]. An alternative
-metric is the Beta-value, i.e. the relative expression of one allele. In this
-example data set, the `ae` data table comprises M-values because it has been
-shown to have more desirable properties for statistical testing [@Du.BB.2010].
-However, if you find Beta-values more intuitive and hence preferable for
-reporting results you may use the function `m2b()` for conversion (and `b2m()`
-for the reverse operation).
+The `ae` data table contains the $\log_2$ of the ratio of the expression of one
+of the alleles over that of the other. This metric is also known as the M-value
+[@Du.BB.2010]. In the `{daeqtlr}` documentation we typically refer to M-values
+by *log-ratios* or *AE ratios*.
 
-M-values can vary between `-Inf` and `Inf`, where zero means balanced allelic
-expression.
+$$\text{M} = \log_2 \frac{x_{A}}{x_{B}}$$
+
+where $x_{A}$ and $x_{B}$ are the allelic expression of the A and B alleles,
+respectively. These can be microarray intensities or sequencing counts or any
+other measure that bears a linear relationship with allelic expression.
+
+An alternative metric is the Beta-value $(\beta)$, i.e. the relative expression
+of one allele in the total of the two alleles' expression:
+
+$$\beta = \frac{x_{A}}{x_{A} + x_{B}}$$
+
+In this example data set, the `ae` data table comprises M-values because it has
+been shown to have more desirable properties for statistical testing
+[@Du.BB.2010]. However, if you find Beta-values more intuitive and hence
+preferable for reporting results you may use the function `m2b()` for conversion
+(and `b2m()` for the reverse operation).
+
+M-values can vary between `-Inf`, if only one of the alleles is expressed, and
+`Inf`, if only the other allele is expressed. An M-value of zero means balanced
+allelic expression (equal expression of both alleles).
 
 ```{r}
-# First 4 samples (first column is the SNP identifier)
-ae[, 1:5]
-
-# Number of SNPs with measured allelic expression
-# These are the DAE SNPs
+# Number of DAE SNPs, i.e. SNPs with measured allelic expression
 nrow(ae)
+
+# First 5 samples (first column is the SNP identifier)
+ae[, 1:6]
 ```
 
 ## DAEQTL mapping
@@ -162,8 +175,42 @@ mapping_results <- daeqtl_mapping(snp_pairs = snp_pairs,
                                   ae = ae)
 
 # Omiting here the columns `dae_snp_position` and `candidate_snp_position`
-# and showing only the first 30 pairs for brevity.
-mapping_results[1:30, -c('dae_snp_position', 'candidate_snp_position')]
+# and showing only the first 5 pairs for brevity.
+mapping_results[1:5, -c('dae_snp_position', 'candidate_snp_position')]
+```
+
+Now let us sort by ascending P value to check the pairs that show the most
+strong evidence of association.
+
+```{r}
+mapping_results %>%
+  dplyr::select(-c('dae_snp_position', 'candidate_snp_position')) %>%
+  dplyr::arrange(pvalue) %>%
+  dplyr::slice_head(n = 10)
+```
+
+### rsX059 and rsX057
+
+TODO: Explanation of case 3.
+
+```{r}
+# DAEQTL plot for the pair rsX059/rsX057
+daeqtl_plot(
+  ae_hom = ae_hom('rsX059', 'rsX057', zygosity, ae),
+  ae_het = ae_het('rsX059', 'rsX057', zygosity, ae)
+)
+```
+
+### rsX031 and rsX062
+
+TODO: Explanation of case 4.
+
+```{r}
+# DAEQTL plot for the pair rsX031/rsX062
+daeqtl_plot(
+  ae_hom = ae_hom('rsX031', 'rsX062', zygosity, ae),
+  ae_het = ae_het('rsX031', 'rsX062', zygosity, ae)
+)
 ```
 
 ## References

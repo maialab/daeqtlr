@@ -23,5 +23,8 @@ read_ae_ratios <- function(file, sep = ",", header = TRUE, ...) {
   # Fix the name of the first column
   data.table::setnames(dt, 1L, 'dae_snp')
 
+  # Create key on `dae_snp`
+  data.table::setkeyv(dt, 'dae_snp')
+
   dt
 }

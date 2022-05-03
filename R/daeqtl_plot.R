@@ -1,6 +1,6 @@
 ae_lim <- function(ae) {
 
-  ceiling(max(max(ae), 1))
+  ceiling(max(max(abs(ae)), 1))
 
 }
 

@@ -15,6 +15,8 @@ in turn, be used in testing statistical associations with DAE. This
 package provides routines for performing such a workflow, i.e. DAEQTL
 mapping.
 
+Learn more in <https://maialab.org/daeqtlr>.
+
 ## Installation
 
 You can install the development version of `{daeqtlr}` like so:

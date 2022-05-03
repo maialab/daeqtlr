@@ -27,22 +27,11 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
       next
     }
 
-    # `csnp_hom`: lgl indicating homozygous samples for the candidate snp
-    csnp_hom <- is_hom(dt = zygosity, snp = candidate_snp)
+    ae_hom <- ae_hom(dae_snp, candidate_snp, zygosity, ae)
+    ae_het <- ae_het(dae_snp, candidate_snp, zygosity, ae)
 
-    # `csnp_het`: lgl indicating heterozygous samples for the candidate snp
-    csnp_het <- is_het(dt = zygosity, snp = candidate_snp)
+    df <- fn(ae_hom = ae_hom, ae_het = ae_het, ...)
 
-    # `dsnp_het`: lgl indicating heterozygous samples for the dae snp
-    dsnp_het <- is_het(dt = zygosity, snp = dae_snp)
-
-    # `ae_hom`: dbl with allelic ratios of homozygous samples (candidate snp)
-    ae_hom <- as.numeric(ae[dae_snp][, 1 := NULL][, dsnp_het & csnp_hom, with = FALSE])
-
-    # `ae_het`: dbl with allelic ratios of heterozygous samples (candidate snp)
-    ae_het <- as.numeric(ae[dae_snp][, 1 := NULL][, dsnp_het & csnp_het, with = FALSE])
-
-    df <- fn(ae_hom = ae_hom[!is.na(ae_hom)], ae_het = ae_het[!is.na(ae_het)], ...)
     for (col in names(df)) data.table::set(snp_pairs, i = i, j = col, value = df[[col]])
   }
 

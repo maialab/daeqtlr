@@ -33,6 +33,11 @@ reference:
   - as_zygous
   - create_snp_table
   - create_snp_pairs
+  - ae
+  - ae_hom
+  - ae_het
+  - is_hom
+  - is_het
 - title: "M-values and Beta-values"
   contents:
   - m2b

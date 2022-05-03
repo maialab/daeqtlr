@@ -2,23 +2,40 @@
 % Please edit documentation in R/m2b.R
 \name{m2b}
 \alias{m2b}
-\title{Convert M-values to Beta-values}
+\alias{b2m}
+\title{Convert M-values to Beta-values and back again}
 \usage{
 m2b(m, base = 2)
+
+b2m(b, base = 2)
 }
 \arguments{
 \item{m}{A numeric vector of M-values.}
 
 \item{base}{The base with respect to which logarithms are computed. Defaults
 to \code{base = 2}.}
+
+\item{b}{A numeric vector of Beta-values.}
 }
 \description{
-This function converts M-values to Beta-values.
+\itemize{
+\item \code{m2b()} converts M-values to Beta-values.
+\item \code{b2m()} converts Beta-values to M-values.
+}
 }
 \examples{
+# M-values and Beta-values have different domains
 m2b(c(-Inf, 0, Inf))
+b2m(c(0, 0.5, 1))
+
+# `m2b()` and `b2m()` are the inverse of one another
+b2m(m2b(c(-Inf, 0, Inf)))
+
+m2b(b2m(c(0, 0.5, 1)))
 
 }
-\seealso{
-\code{\link[=b2m]{b2m()}} for the reverse operation.
+\references{
+Du, P. et al. \emph{Comparison of Beta-value and M-value methods for
+quantifying methylation levels by microarray analysis}. BMC Bioinformatics
+11, (2010). \doi{10.1186/1471-2105-11-587}.
 }
