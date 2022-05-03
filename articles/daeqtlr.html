@@ -188,6 +188,7 @@
 <p><span class="math display">\[\beta = \frac{x_{A}}{x_{A} + x_{B}}\]</span></p>
 <p>In this example data set, the <code>ae</code> data table comprises M-values because it has been shown to have more desirable properties for statistical testing<span class="citation"><sup>1</sup></span>. However, if you find Beta-values more intuitive and hence preferable for reporting results you may use the function <code><a href="../reference/m2b.html">m2b()</a></code> for conversion (and <code><a href="../reference/m2b.html">b2m()</a></code> for the reverse operation).</p>
 <p>M-values can vary between <code>-Inf</code>, if only one of the alleles is expressed, and <code>Inf</code>, if only the other allele is expressed. An M-value of zero means balanced allelic expression (equal expression of both alleles).</p>
+<p>Note how sparse the <code>ae</code> data table is, having many <code>NA</code>s values. That is because allelic ratios can’t be assayed for homozygous samples, hence resulting in <code>NA</code> values. A few of those <code>NA</code>s should actually be truly missing ratios for heterozygous samples.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Number of DAE SNPs, i.e. SNPs with measured allelic expression</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ae</span><span class="op">)</span>
@@ -195,18 +196,18 @@
 
 <span class="co"># First 5 samples (first column is the SNP identifier)</span>
 <span class="va">ae</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>
-<span class="co">#&gt;     dae_snp         s01         s02         s03         s04         s05</span>
-<span class="co">#&gt;  1:  rsX019  0.34176550  0.02681199  0.09909749 -0.27985290 -0.13830710</span>
-<span class="co">#&gt;  2:  rsX020  2.46806900          NA  2.81560000          NA  1.17734500</span>
-<span class="co">#&gt;  3:  rsX031  0.43276128  1.28668700  0.60065229  0.36049254 -1.31717287</span>
-<span class="co">#&gt;  4:  rsX038 -0.47084220  0.34195080  0.50772590 -0.08951668  0.07892864</span>
-<span class="co">#&gt;  5:  rsX041  0.16917890 -0.85413270  0.35275210  2.55589100 -1.00207400</span>
-<span class="co">#&gt;  6:  rsX048  1.31660300  0.84591350  1.24441500  1.31580000  0.53643270</span>
-<span class="co">#&gt;  7:  rsX049  0.46547396  0.64117418  0.49471933 -0.24431776  0.48254007</span>
-<span class="co">#&gt;  8:  rsX051  0.23175630  0.51505900          NA          NA  0.80177990</span>
-<span class="co">#&gt;  9:  rsX058          NA  1.89762256  1.38378226 -0.92397713  2.41020835</span>
-<span class="co">#&gt; 10:  rsX059  0.11945310  0.65581140          NA  0.50474010  0.48633720</span>
-<span class="co">#&gt; 11:  rsX060  0.07940053 -0.61600390 -0.73958170  1.01771300 -0.31974190</span></code></pre></div>
+<span class="co">#&gt;     dae_snp        s01        s02       s03         s04      s05</span>
+<span class="co">#&gt;  1:  rsX019         NA         NA        NA          NA       NA</span>
+<span class="co">#&gt;  2:  rsX020         NA         NA        NA          NA 1.177345</span>
+<span class="co">#&gt;  3:  rsX031  0.4327613         NA        NA          NA       NA</span>
+<span class="co">#&gt;  4:  rsX038 -0.4708422         NA 0.5077259 -0.08951668       NA</span>
+<span class="co">#&gt;  5:  rsX041         NA -0.8541327 0.3527521          NA       NA</span>
+<span class="co">#&gt;  6:  rsX048         NA         NA        NA          NA       NA</span>
+<span class="co">#&gt;  7:  rsX049  0.4654740         NA        NA -0.24431776       NA</span>
+<span class="co">#&gt;  8:  rsX051         NA         NA        NA          NA       NA</span>
+<span class="co">#&gt;  9:  rsX058         NA  1.8976226 1.3837823          NA 2.410208</span>
+<span class="co">#&gt; 10:  rsX059         NA         NA        NA          NA       NA</span>
+<span class="co">#&gt; 11:  rsX060         NA         NA        NA          NA       NA</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
