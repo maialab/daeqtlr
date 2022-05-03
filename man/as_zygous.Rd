@@ -36,7 +36,7 @@ This is for performance reasons.
 levels <- c("AA", "AB", "BA", "BB")
 (df <- data.frame(
   snp = c('rs123', 'rs456'),
-  sample_01 = factor(c('AB', 'BA'), levels),
+  sample01 = factor(c('AB', 'BA'), levels),
   sample02 = factor(c('AA', 'BB'), levels)
 ))
 as_zygous(df)
