@@ -5,6 +5,8 @@
 #'
 #' @param file Name of file. If `NULL`, the example files will be listed.
 #' @export
+#'
+#' @md
 #' @examples
 #' daeqtlr_example()
 #' daeqtlr_example("zygosity.csv")
