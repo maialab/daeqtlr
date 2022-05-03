@@ -71,6 +71,11 @@
 <div class="section level2">
 <h2 id="concepts">Concepts<a class="anchor" aria-label="anchor" href="#concepts"></a>
 </h2>
+<ul>
+<li><p>DAE SNP: SNP on which the allelic expression (AE) ratio is measured. AE is the quantitative trait used as one of the variables in the statistical association test when performing DAEQTL mapping. AE ratios are only sensible for DAE SNPs that are heterozygous.</p></li>
+<li><p>Candidate SNP: SNP candidate for DAE quantitative trait loci (DAEQTL). These are the SNPs whose zygosity level is used as the other variable in the statistical association test.</p></li>
+<li><p>Zygosity: degree to which both copies of a locus in two homologous chromosomes have the same genetic sequence or not. If both copies are the same, then the locus is homozygous, if they are different, the loci are heterozygous.</p></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -141,49 +146,53 @@
 </h3>
 <p>The <code>zygosity</code> data table consists of the zygosity levels for the SNP / sample combination. Samples are also dummy and are therefore generically named <code>"s01"</code>, <code>"s02"</code>, etc. The values <code>"hom"</code> and <code>"het"</code> stand for homozygous and heterozygous, respectively.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># First 10 SNPs, first 4 samples (first column is the SNP identifier)</span>
-<span class="va">zygosity</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;        snp s01 s02 s03 s04</span>
-<span class="co">#&gt;  1: rsX001 hom hom hom het</span>
-<span class="co">#&gt;  2: rsX002 hom hom hom hom</span>
-<span class="co">#&gt;  3: rsX003 het hom hom het</span>
-<span class="co">#&gt;  4: rsX004 hom hom hom het</span>
-<span class="co">#&gt;  5: rsX005 het hom het het</span>
-<span class="co">#&gt;  6: rsX006 hom het het hom</span>
-<span class="co">#&gt;  7: rsX007 hom hom hom hom</span>
-<span class="co">#&gt;  8: rsX008 hom hom hom hom</span>
-<span class="co">#&gt;  9: rsX009 het het hom hom</span>
-<span class="co">#&gt; 10: rsX010 het hom het het</span>
+<code class="sourceCode R"><span class="co"># First 10 SNPs, first 15 samples (first column is the SNP identifier)</span>
+<span class="va">zygosity</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">16</span><span class="op">]</span>
+<span class="co">#&gt;        snp s01 s02 s03 s04 s05 s06 s07 s08 s09 s10 s11 s12 s13 s14 s15</span>
+<span class="co">#&gt;  1: rsX001 hom hom hom het hom hom hom hom hom hom hom hom het hom hom</span>
+<span class="co">#&gt;  2: rsX002 hom hom hom hom hom hom hom hom hom hom het hom hom hom hom</span>
+<span class="co">#&gt;  3: rsX003 het hom hom het het hom hom hom hom hom hom het hom hom hom</span>
+<span class="co">#&gt;  4: rsX004 hom hom hom het het hom hom het hom hom het het hom hom hom</span>
+<span class="co">#&gt;  5: rsX005 het hom het het hom het het het hom hom hom hom het hom het</span>
+<span class="co">#&gt;  6: rsX006 hom het het hom hom het hom het hom het het hom het hom het</span>
+<span class="co">#&gt;  7: rsX007 hom hom hom hom hom hom hom hom hom hom hom hom hom hom hom</span>
+<span class="co">#&gt;  8: rsX008 hom hom hom hom hom hom het hom het het hom het het het het</span>
+<span class="co">#&gt;  9: rsX009 het het hom hom hom het hom hom hom hom hom hom hom hom hom</span>
+<span class="co">#&gt; 10: rsX010 het hom het het hom het het het hom hom hom hom het hom het</span>
 
 <span class="co"># Number of genotyped (determined zygosity) SNPs</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">zygosity</span><span class="op">)</span>
 <span class="co">#&gt; [1] 66</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="allelic-expression-ratios">Allelic expression ratios<a class="anchor" aria-label="anchor" href="#allelic-expression-ratios"></a>
+<h3 id="allelic-expression-ratios-m-values">Allelic expression ratios (M-values)<a class="anchor" aria-label="anchor" href="#allelic-expression-ratios-m-values"></a>
 </h3>
-<p>The <code>ae</code> data table contains the log2 of the ratio of one of the alleles over the other. This metric is also known as the M-value<span class="citation"><sup>1</sup></span>. An alternative metric is the Beta-value, i.e. the relative expression of one allele. In this example data set, the <code>ae</code> data table comprises M-values because it has been shown to have more desirable properties for statistical testing<span class="citation"><sup>1</sup></span>. However, if you find Beta-values more intuitive and hence preferable for reporting results you may use the function <code><a href="../reference/m2b.html">m2b()</a></code> for conversion (and <code><a href="../reference/b2m.html">b2m()</a></code> for the reverse operation).</p>
-<p>M-values can vary between <code>-Inf</code> and <code>Inf</code>, where zero means balanced allelic expression.</p>
+<p>The <code>ae</code> data table contains the <span class="math inline">\(\log_2\)</span> of the ratio of the expression of one of the alleles over that of the other. This metric is also known as the M-value<span class="citation"><sup>1</sup></span>. In the <a href="http://maialab.org/daeqtlr" class="external-link">daeqtlr</a> documentation we typically refer to M-values by <em>log-ratios</em> or <em>AE ratios</em>.</p>
+<p><span class="math display">\[\text{M} = \log_2 \frac{x_{A}}{x_{B}}\]</span></p>
+<p>where <span class="math inline">\(x_{A}\)</span> and <span class="math inline">\(x_{B}\)</span> are the allelic expression of the A and B alleles, respectively. These can be microarray intensities or sequencing counts or any other measure that bears a linear relationship with allelic expression.</p>
+<p>An alternative metric is the Beta-value <span class="math inline">\((\beta)\)</span>, i.e. the relative expression of one allele in the total of the two alleles’ expression:</p>
+<p><span class="math display">\[\beta = \frac{x_{A}}{x_{A} + x_{B}}\]</span></p>
+<p>In this example data set, the <code>ae</code> data table comprises M-values because it has been shown to have more desirable properties for statistical testing<span class="citation"><sup>1</sup></span>. However, if you find Beta-values more intuitive and hence preferable for reporting results you may use the function <code><a href="../reference/m2b.html">m2b()</a></code> for conversion (and <code><a href="../reference/m2b.html">b2m()</a></code> for the reverse operation).</p>
+<p>M-values can vary between <code>-Inf</code>, if only one of the alleles is expressed, and <code>Inf</code>, if only the other allele is expressed. An M-value of zero means balanced allelic expression (equal expression of both alleles).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># First 4 samples (first column is the SNP identifier)</span>
-<span class="va">ae</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;     dae_snp         s01         s02         s03         s04</span>
-<span class="co">#&gt;  1:  rsX031  0.43276128  1.28668700  0.60065229  0.36049254</span>
-<span class="co">#&gt;  2:  rsX058          NA  1.89762256  1.38378226 -0.92397713</span>
-<span class="co">#&gt;  3:  rsX049  0.46547396  0.64117418  0.49471933 -0.24431776</span>
-<span class="co">#&gt;  4:  rsX051  0.23175630  0.51505900          NA          NA</span>
-<span class="co">#&gt;  5:  rsX038 -0.47084220  0.34195080  0.50772590 -0.08951668</span>
-<span class="co">#&gt;  6:  rsX041  0.16917890 -0.85413270  0.35275210  2.55589100</span>
-<span class="co">#&gt;  7:  rsX020  2.46806900          NA  2.81560000          NA</span>
-<span class="co">#&gt;  8:  rsX019  0.34176550  0.02681199  0.09909749 -0.27985290</span>
-<span class="co">#&gt;  9:  rsX060  0.07940053 -0.61600390 -0.73958170  1.01771300</span>
-<span class="co">#&gt; 10:  rsX048  1.31660300  0.84591350  1.24441500  1.31580000</span>
-<span class="co">#&gt; 11:  rsX059  0.11945310  0.65581140          NA  0.50474010</span>
-
-<span class="co"># Number of SNPs with measured allelic expression</span>
-<span class="co"># These are the DAE SNPs</span>
+<code class="sourceCode R"><span class="co"># Number of DAE SNPs, i.e. SNPs with measured allelic expression</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ae</span><span class="op">)</span>
-<span class="co">#&gt; [1] 11</span></code></pre></div>
+<span class="co">#&gt; [1] 11</span>
+
+<span class="co"># First 5 samples (first column is the SNP identifier)</span>
+<span class="va">ae</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>
+<span class="co">#&gt;     dae_snp         s01         s02         s03         s04         s05</span>
+<span class="co">#&gt;  1:  rsX019  0.34176550  0.02681199  0.09909749 -0.27985290 -0.13830710</span>
+<span class="co">#&gt;  2:  rsX020  2.46806900          NA  2.81560000          NA  1.17734500</span>
+<span class="co">#&gt;  3:  rsX031  0.43276128  1.28668700  0.60065229  0.36049254 -1.31717287</span>
+<span class="co">#&gt;  4:  rsX038 -0.47084220  0.34195080  0.50772590 -0.08951668  0.07892864</span>
+<span class="co">#&gt;  5:  rsX041  0.16917890 -0.85413270  0.35275210  2.55589100 -1.00207400</span>
+<span class="co">#&gt;  6:  rsX048  1.31660300  0.84591350  1.24441500  1.31580000  0.53643270</span>
+<span class="co">#&gt;  7:  rsX049  0.46547396  0.64117418  0.49471933 -0.24431776  0.48254007</span>
+<span class="co">#&gt;  8:  rsX051  0.23175630  0.51505900          NA          NA  0.80177990</span>
+<span class="co">#&gt;  9:  rsX058          NA  1.89762256  1.38378226 -0.92397713  2.41020835</span>
+<span class="co">#&gt; 10:  rsX059  0.11945310  0.65581140          NA  0.50474010  0.48633720</span>
+<span class="co">#&gt; 11:  rsX060  0.07940053 -0.61600390 -0.73958170  1.01771300 -0.31974190</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -193,43 +202,60 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># `snp_pairs` is updated by reference, so `snp_pairs` and `mapping_results`</span>
 <span class="co"># refer to the same object in memory.</span>
-<span class="va">mapping_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>, zygosity <span class="op">=</span> <span class="va">zygosity</span>, ae <span class="op">=</span> <span class="va">ae</span><span class="op">)</span>
+<span class="va">mapping_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
+                                  zygosity <span class="op">=</span> <span class="va">zygosity</span>,
+                                  ae <span class="op">=</span> <span class="va">ae</span><span class="op">)</span>
 
 <span class="co"># Omiting here the columns `dae_snp_position` and `candidate_snp_position`</span>
-<span class="co"># and showing only the first 30 pairs for brevity.</span>
-<span class="va">mapping_results</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt;     dae_snp candidate_snp chromosome    pvalue case</span>
-<span class="co">#&gt;  1:  rsX019        rsX002         19 0.8331668    4</span>
-<span class="co">#&gt;  2:  rsX019        rsX003         19 0.1348031    4</span>
-<span class="co">#&gt;  3:  rsX019        rsX005         19 0.9280741    4</span>
-<span class="co">#&gt;  4:  rsX019        rsX010         19 0.9280741    4</span>
-<span class="co">#&gt;  5:  rsX019        rsX014         19 0.1348031    4</span>
-<span class="co">#&gt;  6:  rsX019        rsX016         19        NA    2</span>
-<span class="co">#&gt;  7:  rsX019        rsX017         19        NA    2</span>
-<span class="co">#&gt;  8:  rsX019        rsX018         19 0.9255817    4</span>
-<span class="co">#&gt;  9:  rsX019        rsX022         19 0.3994533    4</span>
-<span class="co">#&gt; 10:  rsX019        rsX023         19 0.3736310    4</span>
-<span class="co">#&gt; 11:  rsX019        rsX024         19 0.8813157    4</span>
-<span class="co">#&gt; 12:  rsX019        rsX025         19        NA    1</span>
-<span class="co">#&gt; 13:  rsX019        rsX026         19        NA    1</span>
-<span class="co">#&gt; 14:  rsX019        rsX043         19        NA    1</span>
-<span class="co">#&gt; 15:  rsX019        rsX045         19        NA    2</span>
-<span class="co">#&gt; 16:  rsX019        rsX046         19        NA    1</span>
-<span class="co">#&gt; 17:  rsX019        rsX047         19        NA    2</span>
-<span class="co">#&gt; 18:  rsX019        rsX048         19        NA    2</span>
-<span class="co">#&gt; 19:  rsX019        rsX050         19        NA    2</span>
-<span class="co">#&gt; 20:  rsX019        rsX051         19        NA    2</span>
-<span class="co">#&gt; 21:  rsX019        rsX053         19        NA    2</span>
-<span class="co">#&gt; 22:  rsX019        rsX054         19        NA    2</span>
-<span class="co">#&gt; 23:  rsX019        rsX060         19 0.1348031    4</span>
-<span class="co">#&gt; 24:  rsX019        rsX064         19        NA    1</span>
-<span class="co">#&gt; 25:  rsX020        rsX008          1 0.1226391    4</span>
-<span class="co">#&gt; 26:  rsX020        rsX011          1 0.1003482    3</span>
-<span class="co">#&gt; 27:  rsX020        rsX012          1 0.1003482    3</span>
-<span class="co">#&gt; 28:  rsX020        rsX013          1        NA    1</span>
-<span class="co">#&gt; 29:  rsX020        rsX015          1 0.3492677    4</span>
-<span class="co">#&gt; 30:  rsX020        rsX021          1 0.1814492    3</span>
-<span class="co">#&gt;     dae_snp candidate_snp chromosome    pvalue case</span></code></pre></div>
+<span class="co"># and showing only the first 5 pairs for brevity.</span>
+<span class="va">mapping_results</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
+<span class="co">#&gt;    dae_snp candidate_snp chromosome    pvalue case</span>
+<span class="co">#&gt; 1:  rsX019        rsX002         19 0.8331668    4</span>
+<span class="co">#&gt; 2:  rsX019        rsX003         19 0.1348031    4</span>
+<span class="co">#&gt; 3:  rsX019        rsX005         19 0.9280741    4</span>
+<span class="co">#&gt; 4:  rsX019        rsX010         19 0.9280741    4</span>
+<span class="co">#&gt; 5:  rsX019        rsX014         19 0.1348031    4</span></code></pre></div>
+<p>Now let us sort by ascending P value to check the pairs that show the most strong evidence of association.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mapping_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pvalue</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;     dae_snp candidate_snp chromosome      pvalue case</span>
+<span class="co">#&gt;  1:  rsX059        rsX057          4 0.003857293    3</span>
+<span class="co">#&gt;  2:  rsX031        rsX062          1 0.004554027    4</span>
+<span class="co">#&gt;  3:  rsX031        rsX039          1 0.011581429    4</span>
+<span class="co">#&gt;  4:  rsX038        rsX035          4 0.019107190    4</span>
+<span class="co">#&gt;  5:  rsX041        rsX032          4 0.033376508    4</span>
+<span class="co">#&gt;  6:  rsX058        rsX057          4 0.038642034    4</span>
+<span class="co">#&gt;  7:  rsX058        rsX059          4 0.038642034    4</span>
+<span class="co">#&gt;  8:  rsX041        rsX009          4 0.041884336    4</span>
+<span class="co">#&gt;  9:  rsX051        rsX023         19 0.046695338    4</span>
+<span class="co">#&gt; 10:  rsX060        rsX003         19 0.059058229    3</span></code></pre></div>
+<div class="section level3">
+<h3 id="rsx059-and-rsx057">rsX059 and rsX057<a class="anchor" aria-label="anchor" href="#rsx059-and-rsx057"></a>
+</h3>
+<p>TODO: Explanation of case 3.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># DAEQTL plot for the pair rsX059/rsX057</span>
+<span class="fu"><a href="../reference/daeqtl_plot.html">daeqtl_plot</a></span><span class="op">(</span>
+  ae_hom <span class="op">=</span> <span class="fu"><a href="../reference/ae.html">ae_hom</a></span><span class="op">(</span><span class="st">'rsX059'</span>, <span class="st">'rsX057'</span>, <span class="va">zygosity</span>, <span class="va">ae</span><span class="op">)</span>,
+  ae_het <span class="op">=</span> <span class="fu"><a href="../reference/ae.html">ae_het</a></span><span class="op">(</span><span class="st">'rsX059'</span>, <span class="st">'rsX057'</span>, <span class="va">zygosity</span>, <span class="va">ae</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<p><img src="daeqtlr_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="rsx031-and-rsx062">rsX031 and rsX062<a class="anchor" aria-label="anchor" href="#rsx031-and-rsx062"></a>
+</h3>
+<p>TODO: Explanation of case 4.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># DAEQTL plot for the pair rsX031/rsX062</span>
+<span class="fu"><a href="../reference/daeqtl_plot.html">daeqtl_plot</a></span><span class="op">(</span>
+  ae_hom <span class="op">=</span> <span class="fu"><a href="../reference/ae.html">ae_hom</a></span><span class="op">(</span><span class="st">'rsX031'</span>, <span class="st">'rsX062'</span>, <span class="va">zygosity</span>, <span class="va">ae</span><span class="op">)</span>,
+  ae_het <span class="op">=</span> <span class="fu"><a href="../reference/ae.html">ae_het</a></span><span class="op">(</span><span class="st">'rsX031'</span>, <span class="st">'rsX062'</span>, <span class="va">zygosity</span>, <span class="va">ae</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<p><img src="daeqtlr_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

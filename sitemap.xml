@@ -22,10 +22,10 @@
     <loc>https://maialab.org/daeqtlr/index.html</loc>
   </url>
   <url>
-    <loc>https://maialab.org/daeqtlr/reference/as_zygous.html</loc>
+    <loc>https://maialab.org/daeqtlr/reference/ae.html</loc>
   </url>
   <url>
-    <loc>https://maialab.org/daeqtlr/reference/b2m.html</loc>
+    <loc>https://maialab.org/daeqtlr/reference/as_zygous.html</loc>
   </url>
   <url>
     <loc>https://maialab.org/daeqtlr/reference/create_snp_pairs.html</loc>
@@ -50,6 +50,9 @@
   </url>
   <url>
     <loc>https://maialab.org/daeqtlr/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://maialab.org/daeqtlr/reference/is_hom.html</loc>
   </url>
   <url>
     <loc>https://maialab.org/daeqtlr/reference/m2b.html</loc>
