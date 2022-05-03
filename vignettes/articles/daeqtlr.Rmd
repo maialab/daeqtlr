@@ -156,6 +156,11 @@ M-values can vary between `-Inf`, if only one of the alleles is expressed, and
 `Inf`, if only the other allele is expressed. An M-value of zero means balanced
 allelic expression (equal expression of both alleles).
 
+Note how sparse the `ae` data table is, having many `NA`s values. That is
+because allelic ratios can't be assayed for homozygous samples, hence resulting
+in `NA` values. A few of those `NA`s should actually be truly missing ratios for
+heterozygous samples.
+
 ```{r}
 # Number of DAE SNPs, i.e. SNPs with measured allelic expression
 nrow(ae)
