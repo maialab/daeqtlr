@@ -31,6 +31,11 @@ This function needs to have two named arguments \code{ae_hom} and \code{ae_het}.
 Extra arguments will be read from \code{...}.}
 
 \item{...}{Extra arguments passed on to the call of \code{test_fn()}.}
+
+\item{.extra_cols}{The number of extra columns you are creating with \code{fn}.}
+
+\item{n_cores}{The number of cores to use if processing is to be
+parallelized.}
 }
 \value{
 An updated version of the data frame \code{snp_pairs}. The update includes

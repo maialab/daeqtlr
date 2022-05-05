@@ -59,6 +59,9 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ..., .ext
 #'   This function needs to have two named arguments `ae_hom` and `ae_het`.
 #'   Extra arguments will be read from `...`.
 #' @param ... Extra arguments passed on to the call of `test_fn()`.
+#' @param .extra_cols The number of extra columns you are creating with `fn`.
+#' @param n_cores The number of cores to use if processing is to be
+#'   parallelized.
 #'
 #' @return An updated version of the data frame `snp_pairs`. The update includes
 #'   extra columns, typically `pvalue` and `case`.
