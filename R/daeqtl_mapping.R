@@ -104,3 +104,37 @@ daeqtl_mapping <-
     data.table::setkeyv(mapping_dt, cols = c('dae_snp', 'candidate_snp'))
     return(mapping_dt)
 }
+
+#' @export
+daeqtl_mapping2 <-
+  function(snp_pairs,
+           zygosity,
+           ae,
+           fn = daeqtl_test,
+           ...,
+           .extra_cols = 2L,
+           .n_cores = 1L) {
+
+    snp_pairs_lst <-
+      split(snp_pairs, split_index(nrow(snp_pairs), .n_cores))
+
+    for (i in seq_along(snp_pairs_lst)) {
+      data.table::setkeyv(snp_pairs_lst[[i]], c('dae_snp', 'candidate_snp'))
+    }
+
+    res <- future.apply::future_lapply(
+      snp_pairs_lst,
+      FUN = daeqtl_mapping_,
+      zygosity = zygosity,
+      ae = ae,
+      fn = fn,
+      ...,
+      .extra_cols = .extra_cols
+    )
+
+    # Put together the data table from the list of data tables
+    mapping_dt <- data.table::rbindlist(res)
+
+    data.table::setkeyv(mapping_dt, cols = c('dae_snp', 'candidate_snp'))
+    return(mapping_dt)
+  }
