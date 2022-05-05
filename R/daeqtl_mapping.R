@@ -60,8 +60,8 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ..., .ext
 #'   Extra arguments will be read from `...`.
 #' @param ... Extra arguments passed on to the call of `test_fn()`.
 #' @param .extra_cols The number of extra columns you are creating with `fn`.
-#' @param n_cores The number of cores to use if processing is to be
-#'   parallelized.
+#' @param .n_cores The number of chunks to divide `snp_pairs` for parallel
+#'   processing.
 #'
 #' @return An updated version of the data frame `snp_pairs`. The update includes
 #'   extra columns, typically `pvalue` and `case`.
@@ -75,49 +75,31 @@ daeqtl_mapping <-
            fn = daeqtl_test,
            ...,
            .extra_cols = 2L,
-           n_cores = 1) {
+           .n_cores = 1L) {
 
-    # Sequential processing
-    if (identical(n_cores, 1))
-      mapping_dt <-
-        daeqtl_mapping_(
-          snp_pairs = snp_pairs,
-          zygosity = zygosity,
-          ae = ae,
-          fn = fn,
-          ...,
-          .extra_cols = .extra_cols
-      )
+    snp_pairs_lst <-
+      split(snp_pairs, split_index(nrow(snp_pairs), .n_cores))
 
-    # Parallel processing
-    if (n_cores > 1) {
-      future::plan(future::multisession)
-
-      # Split `snp_pairs` into `n_cores` data tables
-      snp_pairs_lst <-
-        split(snp_pairs, split_index(nrow(snp_pairs), n_cores))
-
-      for (i in seq_along(snp_pairs_lst)) {
-        data.table::setkeyv(snp_pairs_lst[[i]], c('dae_snp', 'candidate_snp'))
-      }
-
-      res <- future.apply::future_lapply(
-        snp_pairs_lst,
-        FUN = daeqtl_mapping_,
-        zygosity = zygosity,
-        ae = ae,
-        fn = fn,
-        ...,
-        .extra_cols = .extra_cols
-      )
-
-      # Return to sequential processing
-      future::plan(future::sequential)
-
-      # Put together the data table from the list of data tables
-      mapping_dt <- data.table::rbindlist(res)
-
+    for (i in seq_along(snp_pairs_lst)) {
+      data.table::setkeyv(snp_pairs_lst[[i]], c('dae_snp', 'candidate_snp'))
     }
+
+    future::plan(future::multisession)
+
+    res <- future.apply::future_lapply(
+      snp_pairs_lst,
+      FUN = daeqtl_mapping_,
+      zygosity = zygosity,
+      ae = ae,
+      fn = fn,
+      ...,
+      .extra_cols = .extra_cols
+    )
+
+    future::plan(future::sequential)
+
+    # Put together the data table from the list of data tables
+    mapping_dt <- data.table::rbindlist(res)
 
     data.table::setkeyv(mapping_dt, cols = c('dae_snp', 'candidate_snp'))
     return(mapping_dt)
