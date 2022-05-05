@@ -4,7 +4,15 @@
 \alias{daeqtl_mapping}
 \title{DAEQTL mapping}
 \usage{
-daeqtl_mapping(snp_pairs, zygosity, ae, fn = daeqtl_test, ...)
+daeqtl_mapping(
+  snp_pairs,
+  zygosity,
+  ae,
+  fn = daeqtl_test,
+  ...,
+  .extra_cols = 2L,
+  n_cores = 1
+)
 }
 \arguments{
 \item{snp_pairs}{A data frame with DAE SNP/candidate SNP pairs.}

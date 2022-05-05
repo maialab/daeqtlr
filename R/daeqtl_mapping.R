@@ -1,5 +1,5 @@
 #' @keywords internal
-daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
+daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ..., .extra_cols = 2L) {
 
   # Ensure that the data tables are all keyed.
   # `snp_pairs` keys: first two columns
@@ -10,6 +10,10 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
   data.table::setkeyv(ae, colnames(ae)[1])
 
   n <- nrow(snp_pairs)
+  # `setalloccol` is needed because of `future.apply::future_lapply()`,
+  # otherwise https://github.com/Rdatatable/data.table/issues/5376.
+  data.table::setalloccol(snp_pairs, .extra_cols)
+
   for(i in seq_len(n)) {
 
     candidate_snp <- snp_pairs[[i, 'candidate_snp']]
@@ -61,4 +65,57 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ...) {
 #'
 #' @md
 #' @export
-daeqtl_mapping <- daeqtl_mapping_
+daeqtl_mapping <-
+  function(snp_pairs,
+           zygosity,
+           ae,
+           fn = daeqtl_test,
+           ...,
+           .extra_cols = 2L,
+           n_cores = 1) {
+
+    # Sequential processing
+    if (identical(n_cores, 1))
+      mapping_dt <-
+        daeqtl_mapping_(
+          snp_pairs = snp_pairs,
+          zygosity = zygosity,
+          ae = ae,
+          fn = fn,
+          ...,
+          .extra_cols = .extra_cols
+      )
+
+    # Parallel processing
+    if (n_cores > 1) {
+      future::plan(future::multisession)
+
+      # Split `snp_pairs` into `n_cores` data tables
+      snp_pairs_lst <-
+        split(snp_pairs, split_index(nrow(snp_pairs), n_cores))
+
+      for (i in seq_along(snp_pairs_lst)) {
+        data.table::setkeyv(snp_pairs_lst[[i]], c('dae_snp', 'candidate_snp'))
+      }
+
+      res <- future.apply::future_lapply(
+        snp_pairs_lst,
+        FUN = daeqtl_mapping_,
+        zygosity = zygosity,
+        ae = ae,
+        fn = fn,
+        ...,
+        .extra_cols = .extra_cols
+      )
+
+      # Return to sequential processing
+      future::plan(future::sequential)
+
+      # Put together the data table from the list of data tables
+      mapping_dt <- data.table::rbindlist(res)
+
+    }
+
+    data.table::setkeyv(mapping_dt, cols = c('dae_snp', 'candidate_snp'))
+    return(mapping_dt)
+}
