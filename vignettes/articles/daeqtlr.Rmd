@@ -173,28 +173,24 @@ ae[, 1:6]
 
 To perform DAEQTL mapping you use the function `daeqtl_mapping()`. The P-value
 associated with the statistical association will be appended as a new column
-to the data table `snp_pairs` by reference, i.e. the `snp_pairs` is changed
-in-place, no extra copy is created. Here we associate a new variable
-`mapping_results` with the output of `daeqtl_mapping()` but it refers to the
-same data in memory as the new updated `snp_pairs` data table.
+to the data table `snp_pairs`. Check the `vignette('parallel')` to learn how
+to setup your environment to run `daeqtl_mapping()` in parallel.
 
 ```{r}
-# `snp_pairs` is updated by reference, so `snp_pairs` and `mapping_results`
-# refer to the same object in memory.
-mapping_results <- daeqtl_mapping(snp_pairs = snp_pairs,
+mapping_dt <- daeqtl_mapping(snp_pairs = snp_pairs,
                                   zygosity = zygosity,
                                   ae = ae)
 
 # Omiting here the columns `dae_snp_position` and `candidate_snp_position`
 # and showing only the first 5 pairs for brevity.
-mapping_results[1:5, -c('dae_snp_position', 'candidate_snp_position')]
+mapping_dt[1:5, -c('dae_snp_position', 'candidate_snp_position')]
 ```
 
 Now let us sort by ascending P value to check the pairs that show the most
 strong evidence of association.
 
 ```{r}
-mapping_results %>%
+mapping_dt %>%
   dplyr::select(-c('dae_snp_position', 'candidate_snp_position')) %>%
   dplyr::arrange(pvalue) %>%
   dplyr::slice_head(n = 10)

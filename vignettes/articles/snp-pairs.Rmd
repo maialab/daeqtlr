@@ -1,5 +1,5 @@
 ---
-title: "Assembling SNP pairs for DAEQTL mapping"
+title: "Assemble a table of SNP pairs"
 output: html_document
 ---
 

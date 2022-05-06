@@ -11,7 +11,7 @@ daeqtl_mapping(
   fn = daeqtl_test,
   ...,
   .extra_cols = 2L,
-  .n_cores = 1L
+  .n_chunks = 1L
 )
 }
 \arguments{
@@ -34,8 +34,9 @@ Extra arguments will be read from \code{...}.}
 
 \item{.extra_cols}{The number of extra columns you are creating with \code{fn}.}
 
-\item{.n_cores}{The number of chunks to divide \code{snp_pairs} for parallel
-processing.}
+\item{.n_chunks}{The number of chunks to divide \code{snp_pairs} for parallel
+processing. If you are going to run in parallel set this number to be
+equal to the total number of workers.}
 }
 \value{
 An updated version of the data frame \code{snp_pairs}. The update includes

@@ -1,5 +1,5 @@
 ---
-title: "From genotypes to zygosity"
+title: "Convert genotypes to zygosity"
 output: html_document
 ---
 

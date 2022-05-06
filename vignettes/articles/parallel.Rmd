@@ -1,0 +1,112 @@
+---
+title: "Run DAEQTL mapping in parallel"
+output: html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The parallelization supported by the function `daeqtl_mapping()` hinges on the
+packages of the [Futureverse](https://www.futureverse.org/), namely `{future}`
+and `{future.apply}`.
+
+## Running on your local computer
+
+Here's an example that performs DAEQTL mapping in parallel across 3 cores. The
+data table `snp_pairs` is split into 3 chunks (argument `.n_chunks`) so that
+each worker ("forked process") runs on one of those chunks.
+
+```{r eval=FALSE}
+library(daeqtlr)
+
+n_workers <- 3L
+future::plan(future::multisession, workers = n_workers)
+
+snp_pairs <- read_snp_pairs(file = daeqtlr_example("snp_pairs.csv"))
+zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
+ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
+
+mapping_dt <- daeqtl_mapping(
+  snp_pairs = snp_pairs,
+  zygosity = zygosity,
+  ae = ae,
+  .n_chunks = n_workers
+)
+
+# This is not mandatory but it's a good practice to reset the parallelization
+# setup to sequential.
+future::plan("sequential")
+```
+
+## Running on two remote machines
+
+This example applies to a situation where you'd want to run on two remote
+computers, e.g. `rey` and `r2d2`.
+
+For the following code to work you need the following setup:
+
+- SSH access to the remotes machines, e.g. `rey` and `r2d2`.
+- To have already installed `{daeqtlr}` on those machines.
+
+```{r eval=FALSE}
+library(daeqtlr)
+
+# Set the number of workers for each remote machine
+n_workers_rey <- 64L
+n_workers_r2d2 <- 40L
+n_workers <- n_workers_rey + n_workers_r2d2
+
+workers <- c(rep("rey", times = n_workers_rey), rep("r2d2", times = n_workers_r2d2))
+# `future::plan` may take one or two minutes to complete.
+plan <- future::plan(future::cluster, workers = workers, homogeneous = FALSE)
+
+snp_pairs <- read_snp_pairs(file = daeqtlr_example("snp_pairs.csv"))
+zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
+ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
+
+mapping_dt <- daeqtl_mapping(
+  snp_pairs = snp_pairs,
+  zygosity = zygosity,
+  ae = ae,
+  .n_chunks = n_workers
+)
+
+# This is not mandatory but it's a good practice to reset the parallelization
+# setup to sequential.
+future::plan("sequential")
+```
+
+If you want to run this code from one of those machines, then change the
+hostname of that computer to `"localhost"`, e.g., if you intended to run the
+code above from `rey`, then you would do:
+
+```{r eval=FALSE}
+library(daeqtlr)
+
+n_workers_rey <- 64L
+n_workers_r2d2 <- 40L
+n_workers <- n_workers_rey + n_workers_r2d2
+
+workers <- c(rep("localhost", times = n_workers_rey), rep("r2d2", times = n_workers_r2d2))
+# `future::plan` may take one or two minutes to complete.
+plan <- future::plan(future::cluster, workers = workers, homogeneous = FALSE)
+
+snp_pairs <- read_snp_pairs(file = daeqtlr_example("snp_pairs.csv"))
+zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
+ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
+
+mapping_dt <- daeqtl_mapping(
+  snp_pairs = snp_pairs,
+  zygosity = zygosity,
+  ae = ae,
+  .n_chunks = n_workers
+)
+
+# This is not mandatory but it's a good practice to reset the parallelization
+# setup to sequential.
+future::plan("sequential")
+```

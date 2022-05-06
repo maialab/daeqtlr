@@ -55,9 +55,11 @@ zygosity <- read_snp_zygosity(file = daeqtlr_example("zygosity.csv"))
 # Allelic expression (AE) ratios of DAE SNPs
 ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
 
-# `snp_pairs` is updated by reference
-daeqtl_mapping(snp_pairs = snp_pairs, zygosity = zygosity, ae = ae)
+mapping_dt <-
+  daeqtl_mapping(snp_pairs = snp_pairs,
+                 zygosity = zygosity,
+                 ae = ae)
 
 # Here's the first 30 SNP pairs tested
-snp_pairs[1:30, -c('dae_snp_position', 'candidate_snp_position')]
+mapping_dt[1:30, -c('dae_snp_position', 'candidate_snp_position')]
 ```
