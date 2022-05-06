@@ -27,8 +27,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">From genotypes to zygosity</a>
-    <a class="dropdown-item" href="../articles/snp-pairs.html">Assembling SNP pairs for DAEQTL mapping</a>
+    <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">Convert genotypes to zygosity</a>
+    <a class="dropdown-item" href="../articles/parallel.html">Run DAEQTL mapping in parallel</a>
+    <a class="dropdown-item" href="../articles/snp-pairs.html">Assemble a table of SNP pairs</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -65,7 +66,7 @@
   fn <span class="op">=</span> <span class="va">daeqtl_test</span>,
   <span class="va">...</span>,
   .extra_cols <span class="op">=</span> <span class="fl">2L</span>,
-  .n_cores <span class="op">=</span> <span class="fl">1L</span>
+  .n_chunks <span class="op">=</span> <span class="fl">1L</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -90,9 +91,10 @@ Extra arguments will be read from <code>...</code>.</p></dd>
 <dd><p>Extra arguments passed on to the call of <code>test_fn()</code>.</p></dd>
 <dt>.extra_cols</dt>
 <dd><p>The number of extra columns you are creating with <code>fn</code>.</p></dd>
-<dt>.n_cores</dt>
+<dt>.n_chunks</dt>
 <dd><p>The number of chunks to divide <code>snp_pairs</code> for parallel
-processing.</p></dd>
+processing. If you are going to run in parallel set this number to be
+equal to the total number of workers.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

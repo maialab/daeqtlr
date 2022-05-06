@@ -52,8 +52,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/genotypes-to-zygosity.html">From genotypes to zygosity</a>
-    <a class="dropdown-item" href="articles/snp-pairs.html">Assembling SNP pairs for DAEQTL mapping</a>
+    <a class="dropdown-item" href="articles/genotypes-to-zygosity.html">Convert genotypes to zygosity</a>
+    <a class="dropdown-item" href="articles/parallel.html">Run DAEQTL mapping in parallel</a>
+    <a class="dropdown-item" href="articles/snp-pairs.html">Assemble a table of SNP pairs</a>
   </div>
 </li>
       </ul>
@@ -105,11 +106,13 @@
 <span class="co"># Allelic expression (AE) ratios of DAE SNPs</span>
 <span class="va">ae</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_ae_ratios.html">read_ae_ratios</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="reference/daeqtlr_example.html">daeqtlr_example</a></span><span class="op">(</span><span class="st">"ae.csv"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co"># `snp_pairs` is updated by reference</span>
-<span class="fu"><a href="reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>, zygosity <span class="op">=</span> <span class="va">zygosity</span>, ae <span class="op">=</span> <span class="va">ae</span><span class="op">)</span>
+<span class="va">mapping_dt</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
+                 zygosity <span class="op">=</span> <span class="va">zygosity</span>,
+                 ae <span class="op">=</span> <span class="va">ae</span><span class="op">)</span>
 
 <span class="co"># Here's the first 30 SNP pairs tested</span>
-<span class="va">snp_pairs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
+<span class="va">mapping_dt</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;     dae_snp candidate_snp chromosome    pvalue case</span>
 <span class="co">#&gt;  1:  rsX019        rsX002         19 0.8331668    4</span>
 <span class="co">#&gt;  2:  rsX019        rsX003         19 0.1348031    4</span>

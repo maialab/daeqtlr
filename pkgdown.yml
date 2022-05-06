@@ -4,8 +4,9 @@ pkgdown_sha: ~
 articles:
   daeqtlr: daeqtlr.html
   genotypes-to-zygosity: genotypes-to-zygosity.html
+  parallel: parallel.html
   snp-pairs: snp-pairs.html
-last_built: 2022-05-05T20:53Z
+last_built: 2022-05-06T01:08Z
 urls:
   reference: https://maialab.org/daeqtlr/reference
   article: https://maialab.org/daeqtlr/articles

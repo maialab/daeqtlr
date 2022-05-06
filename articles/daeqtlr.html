@@ -44,8 +44,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">From genotypes to zygosity</a>
-    <a class="dropdown-item" href="../articles/snp-pairs.html">Assembling SNP pairs for DAEQTL mapping</a>
+    <a class="dropdown-item" href="../articles/genotypes-to-zygosity.html">Convert genotypes to zygosity</a>
+    <a class="dropdown-item" href="../articles/parallel.html">Run DAEQTL mapping in parallel</a>
+    <a class="dropdown-item" href="../articles/snp-pairs.html">Assemble a table of SNP pairs</a>
   </div>
 </li>
       </ul>
@@ -213,17 +214,15 @@
 <div class="section level2">
 <h2 id="daeqtl-mapping">DAEQTL mapping<a class="anchor" aria-label="anchor" href="#daeqtl-mapping"></a>
 </h2>
-<p>To perform DAEQTL mapping you use the function <code><a href="../reference/daeqtl_mapping.html">daeqtl_mapping()</a></code>. The P-value associated with the statistical association will be appended as a new column to the data table <code>snp_pairs</code> by reference, i.e. the <code>snp_pairs</code> is changed in-place, no extra copy is created. Here we associate a new variable <code>mapping_results</code> with the output of <code><a href="../reference/daeqtl_mapping.html">daeqtl_mapping()</a></code> but it refers to the same data in memory as the new updated <code>snp_pairs</code> data table.</p>
+<p>To perform DAEQTL mapping you use the function <code><a href="../reference/daeqtl_mapping.html">daeqtl_mapping()</a></code>. The P-value associated with the statistical association will be appended as a new column to the data table <code>snp_pairs</code>. Check the <code><a href="../articles/parallel.html">vignette('parallel')</a></code> to learn how to setup your environment to run <code><a href="../reference/daeqtl_mapping.html">daeqtl_mapping()</a></code> in parallel.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># `snp_pairs` is updated by reference, so `snp_pairs` and `mapping_results`</span>
-<span class="co"># refer to the same object in memory.</span>
-<span class="va">mapping_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
+<code class="sourceCode R"><span class="va">mapping_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
                                   zygosity <span class="op">=</span> <span class="va">zygosity</span>,
                                   ae <span class="op">=</span> <span class="va">ae</span><span class="op">)</span>
 
 <span class="co"># Omiting here the columns `dae_snp_position` and `candidate_snp_position`</span>
 <span class="co"># and showing only the first 5 pairs for brevity.</span>
-<span class="va">mapping_results</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
+<span class="va">mapping_dt</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;    dae_snp candidate_snp chromosome    pvalue case</span>
 <span class="co">#&gt; 1:  rsX019        rsX002         19 0.8331668    4</span>
 <span class="co">#&gt; 2:  rsX019        rsX003         19 0.1348031    4</span>
@@ -232,7 +231,7 @@
 <span class="co">#&gt; 5:  rsX019        rsX014         19 0.1348031    4</span></code></pre></div>
 <p>Now let us sort by ascending P value to check the pairs that show the most strong evidence of association.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mapping_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">mapping_dt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'dae_snp_position'</span>, <span class="st">'candidate_snp_position'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pvalue</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
