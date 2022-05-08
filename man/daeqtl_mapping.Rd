@@ -11,7 +11,7 @@ daeqtl_mapping(
   fn = daeqtl_test,
   ...,
   .extra_cols = 2L,
-  .n_chunks = 1L
+  .n_chunks = future::nbrOfWorkers()
 )
 }
 \arguments{

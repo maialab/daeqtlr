@@ -33,8 +33,7 @@ ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
 mapping_dt <- daeqtl_mapping(
   snp_pairs = snp_pairs,
   zygosity = zygosity,
-  ae = ae,
-  .n_chunks = n_workers
+  ae = ae
 )
 
 # This is not mandatory but it's a good practice to reset the parallelization
@@ -55,12 +54,7 @@ For the following code to work you need the following setup:
 ```{r eval=FALSE}
 library(daeqtlr)
 
-# Set the number of workers for each remote machine
-n_workers_rey <- 64L
-n_workers_r2d2 <- 40L
-n_workers <- n_workers_rey + n_workers_r2d2
-
-workers <- c(rep("rey", times = n_workers_rey), rep("r2d2", times = n_workers_r2d2))
+workers <- c(rep("rey", times = 64L), rep("r2d2", times = 40L))
 # `future::plan` may take one or two minutes to complete.
 plan <- future::plan(future::cluster, workers = workers, homogeneous = FALSE)
 
@@ -71,8 +65,7 @@ ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
 mapping_dt <- daeqtl_mapping(
   snp_pairs = snp_pairs,
   zygosity = zygosity,
-  ae = ae,
-  .n_chunks = n_workers
+  ae = ae
 )
 
 # This is not mandatory but it's a good practice to reset the parallelization
@@ -87,11 +80,7 @@ code above from `rey`, then you would do:
 ```{r eval=FALSE}
 library(daeqtlr)
 
-n_workers_rey <- 64L
-n_workers_r2d2 <- 40L
-n_workers <- n_workers_rey + n_workers_r2d2
-
-workers <- c(rep("localhost", times = n_workers_rey), rep("r2d2", times = n_workers_r2d2))
+workers <- c(rep("localhost", times = 64L), rep("r2d2", times = 40L))
 # `future::plan` may take one or two minutes to complete.
 plan <- future::plan(future::cluster, workers = workers, homogeneous = FALSE)
 
@@ -102,8 +91,7 @@ ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
 mapping_dt <- daeqtl_mapping(
   snp_pairs = snp_pairs,
   zygosity = zygosity,
-  ae = ae,
-  .n_chunks = n_workers
+  ae = ae
 )
 
 # This is not mandatory but it's a good practice to reset the parallelization
