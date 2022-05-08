@@ -4,27 +4,23 @@
 \alias{create_snp_pairs}
 \title{Create a table of SNP pairs}
 \usage{
-create_snp_pairs(file, snp_table, window_size = 500000L, verbose = TRUE)
+create_snp_pairs(snp_table, window_size = 500000L)
 }
 \arguments{
-\item{file}{A path to a file where the newly created data table of SNP pairs
-is to be exported.}
-
 \item{snp_table}{A data table of SNP to be used in DAEQTL mapping. Typically,
-this object is created with \code{\link[=create_snp_table]{create_snp_table()}}.}
+this object is created with \code{\link[=create_snp_table]{create_snp_table()}}. See
+\code{vignette('snp-pairs')} for context.}
 
-\item{window_size}{A genomic window size, in base pairs. Default is 500 kb.}
-
-\item{verbose}{Whether to be chatty about this function's progress.}
+\item{window_size}{A genomic window size, in base pairs. Default is 500 kb,
+up and down the DAE SNP, i.e. a window of 1 Mb around the DAE SNP.}
 }
 \value{
-This function is run for its side effect: creating the file indicated
-in \code{file}.
+A data table.
 }
 \description{
 This function creates a data table of SNP pairs to be used in DAEQTL mapping.
-Essentially, this function looks for neighbouring SNPs, i.e. within a
-genomic window (specified with \code{window_size}) and exports a file with those
-SNP pairs, in long format. Check the \code{vignette('snp-pairs')} to understand
-when to use this function.
+Essentially, this function looks for neighboring SNPs, i.e. within a genomic
+window (specified with \code{window_size}) and creates a data table with those SNP
+pairs, in long format. Check the \code{vignette('snp-pairs')} to understand when
+you might need to use this function.
 }

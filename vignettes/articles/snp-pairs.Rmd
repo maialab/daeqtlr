@@ -54,17 +54,16 @@ To create the set of SNP pairs, we use the function `create_snp_pairs()` that
 takes in the `snp_table`. Essentially, the `create_snp_pairs()` searches within
 a genomic neighborhood of each DAE SNP for other SNPs marked as candidate SNPs.
 This genomic neighborhood is specified via a genomic window size centered on
-the DAE SNP. The window size defaults to 500 kb (`window_size = 500000L`).
+the DAE SNP. The window size defaults to 500 kb (`window_size = 500000L`),
+meaning a total of 1 Mb around the DAE SNP's position (500 kb to each side). 
 
 ```{r}
 # Path to the temporary file snp_pairs.csv
 path <- file.path(tempdir(), 'snp_pairs.csv')
 
-# Determines SNP pairs and writes them to a file
-create_snp_pairs(file = path, snp_table = snp_table, verbose = FALSE)
+# Assembles a data table of SNP pairs
+snp_pairs <- create_snp_pairs(snp_table = snp_table)
 
-# Read back in the generated `snp_pairs`
-snp_pairs <- read_snp_pairs(file = path)
 snp_pairs
 ```
 
