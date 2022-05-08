@@ -213,30 +213,27 @@
 <span class="co">#&gt; 66: rsX066          1 180708005      FALSE             TRUE</span>
 <span class="co">#&gt; 67: rsX099          1 180709100       TRUE            FALSE</span>
 <span class="co">#&gt;        snp chromosome  position is_dae_snp is_candidate_snp</span></code></pre></div>
-<p>To create the set of SNP pairs, we use the function <code><a href="../reference/create_snp_pairs.html">create_snp_pairs()</a></code> that takes in the <code>snp_table</code>. Essentially, the <code><a href="../reference/create_snp_pairs.html">create_snp_pairs()</a></code> searches within a genomic neighborhood of each DAE SNP for other SNPs marked as candidate SNPs. This genomic neighborhood is specified via a genomic window size centered on the DAE SNP. The window size defaults to 500 kb (<code>window_size = 500000L</code>).</p>
+<p>To create the set of SNP pairs, we use the function <code><a href="../reference/create_snp_pairs.html">create_snp_pairs()</a></code> that takes in the <code>snp_table</code>. Essentially, the <code><a href="../reference/create_snp_pairs.html">create_snp_pairs()</a></code> searches within a genomic neighborhood of each DAE SNP for other SNPs marked as candidate SNPs. This genomic neighborhood is specified via a genomic window size centered on the DAE SNP. The window size defaults to 500 kb (<code>window_size = 500000L</code>), meaning a total of 1 Mb around the DAE SNP’s position (500 kb to each side).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Path to the temporary file snp_pairs.csv</span>
 <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">'snp_pairs.csv'</span><span class="op">)</span>
 
-<span class="co"># Determines SNP pairs and writes them to a file</span>
-<span class="fu"><a href="../reference/create_snp_pairs.html">create_snp_pairs</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">path</span>, snp_table <span class="op">=</span> <span class="va">snp_table</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; [1] "/tmp/RtmprVDEeC/snp_pairs.csv"</span>
+<span class="co"># Assembles a data table of SNP pairs</span>
+<span class="va">snp_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_snp_pairs.html">create_snp_pairs</a></span><span class="op">(</span>snp_table <span class="op">=</span> <span class="va">snp_table</span><span class="op">)</span>
 
-<span class="co"># Read back in the generated `snp_pairs`</span>
-<span class="va">snp_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_snp_pairs.html">read_snp_pairs</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">path</span><span class="op">)</span>
 <span class="va">snp_pairs</span>
 <span class="co">#&gt;      dae_snp candidate_snp chromosome dae_snp_position candidate_snp_position</span>
-<span class="co">#&gt;   1:  rsX099        rsX008          1        180709100              180682638</span>
-<span class="co">#&gt;   2:  rsX099        rsX011          1        180709100              181006806</span>
-<span class="co">#&gt;   3:  rsX099        rsX012          1        180709100              181005024</span>
+<span class="co">#&gt;   1:  rsX099        rsX052          1        180709100              180575433</span>
+<span class="co">#&gt;   2:  rsX099        rsX008          1        180709100              180682638</span>
+<span class="co">#&gt;   3:  rsX099        rsX066          1        180709100              180708005</span>
 <span class="co">#&gt;   4:  rsX099        rsX013          1        180709100              180709233</span>
-<span class="co">#&gt;   5:  rsX099        rsX015          1        180709100              181114464</span>
+<span class="co">#&gt;   5:  rsX099        rsX030          1        180709100              180744030</span>
 <span class="co">#&gt;  ---                                                                         </span>
 <span class="co">#&gt; 196:  rsX059        rsX027          4        177973549              177956612</span>
-<span class="co">#&gt; 197:  rsX059        rsX028          4        177973549              178073499</span>
-<span class="co">#&gt; 198:  rsX059        rsX057          4        177973549              177971967</span>
-<span class="co">#&gt; 199:  rsX059        rsX058          4        177973549              177973123</span>
-<span class="co">#&gt; 200:  rsX059        rsX063          4        177973549              177602406</span></code></pre></div>
+<span class="co">#&gt; 197:  rsX059        rsX057          4        177973549              177971967</span>
+<span class="co">#&gt; 198:  rsX059        rsX058          4        177973549              177973123</span>
+<span class="co">#&gt; 199:  rsX059        rsX028          4        177973549              178073499</span>
+<span class="co">#&gt; 200:  rsX059        rsX007          4        177973549              178157767</span></code></pre></div>
 <p>And there you have it, the SNP pairs needed for DAEQTL mapping as explained in <code><a href="../articles/daeqtlr.html">vignette('daeqtlr')</a></code>.</p>
   </main>
 </div>

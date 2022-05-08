@@ -99,8 +99,7 @@
 <span class="va">mapping_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>
   snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
   zygosity <span class="op">=</span> <span class="va">zygosity</span>,
-  ae <span class="op">=</span> <span class="va">ae</span>,
-  .n_chunks <span class="op">=</span> <span class="va">n_workers</span>
+  ae <span class="op">=</span> <span class="va">ae</span>
 <span class="op">)</span>
 
 <span class="co"># This is not mandatory but it's a good practice to reset the parallelization</span>
@@ -119,12 +118,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://maialab.org/daeqtlr" class="external-link">daeqtlr</a></span><span class="op">)</span>
 
-<span class="co"># Set the number of workers for each remote machine</span>
-<span class="va">n_workers_rey</span> <span class="op">&lt;-</span> <span class="fl">64L</span>
-<span class="va">n_workers_r2d2</span> <span class="op">&lt;-</span> <span class="fl">40L</span>
-<span class="va">n_workers</span> <span class="op">&lt;-</span> <span class="va">n_workers_rey</span> <span class="op">+</span> <span class="va">n_workers_r2d2</span>
-
-<span class="va">workers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"rey"</span>, times <span class="op">=</span> <span class="va">n_workers_rey</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"r2d2"</span>, times <span class="op">=</span> <span class="va">n_workers_r2d2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">workers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"rey"</span>, times <span class="op">=</span> <span class="fl">64L</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"r2d2"</span>, times <span class="op">=</span> <span class="fl">40L</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># `future::plan` may take one or two minutes to complete.</span>
 <span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/cluster.html" class="external-link">cluster</a></span>, workers <span class="op">=</span> <span class="va">workers</span>, homogeneous <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
@@ -135,8 +129,7 @@
 <span class="va">mapping_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>
   snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
   zygosity <span class="op">=</span> <span class="va">zygosity</span>,
-  ae <span class="op">=</span> <span class="va">ae</span>,
-  .n_chunks <span class="op">=</span> <span class="va">n_workers</span>
+  ae <span class="op">=</span> <span class="va">ae</span>
 <span class="op">)</span>
 
 <span class="co"># This is not mandatory but it's a good practice to reset the parallelization</span>
@@ -146,11 +139,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://maialab.org/daeqtlr" class="external-link">daeqtlr</a></span><span class="op">)</span>
 
-<span class="va">n_workers_rey</span> <span class="op">&lt;-</span> <span class="fl">64L</span>
-<span class="va">n_workers_r2d2</span> <span class="op">&lt;-</span> <span class="fl">40L</span>
-<span class="va">n_workers</span> <span class="op">&lt;-</span> <span class="va">n_workers_rey</span> <span class="op">+</span> <span class="va">n_workers_r2d2</span>
-
-<span class="va">workers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"localhost"</span>, times <span class="op">=</span> <span class="va">n_workers_rey</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"r2d2"</span>, times <span class="op">=</span> <span class="va">n_workers_r2d2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">workers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"localhost"</span>, times <span class="op">=</span> <span class="fl">64L</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"r2d2"</span>, times <span class="op">=</span> <span class="fl">40L</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># `future::plan` may take one or two minutes to complete.</span>
 <span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/cluster.html" class="external-link">cluster</a></span>, workers <span class="op">=</span> <span class="va">workers</span>, homogeneous <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
@@ -161,8 +150,7 @@
 <span class="va">mapping_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/daeqtl_mapping.html">daeqtl_mapping</a></span><span class="op">(</span>
   snp_pairs <span class="op">=</span> <span class="va">snp_pairs</span>,
   zygosity <span class="op">=</span> <span class="va">zygosity</span>,
-  ae <span class="op">=</span> <span class="va">ae</span>,
-  .n_chunks <span class="op">=</span> <span class="va">n_workers</span>
+  ae <span class="op">=</span> <span class="va">ae</span>
 <span class="op">)</span>
 
 <span class="co"># This is not mandatory but it's a good practice to reset the parallelization</span>
