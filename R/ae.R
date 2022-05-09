@@ -34,7 +34,8 @@
 #' ae('rsX019', ae = ae, drop_na = FALSE)
 #'
 #' # Select only the first 5 samples
-#' ae('rsX019', ae = ae, samples = 1:5, drop_na = FALSE)
+#' ae('rsX019', ae = ae, samples = 1:10, drop_na = FALSE)
+#' ae('rsX019', ae = ae, samples = 1:10, drop_na = TRUE)
 #'
 #' # Use a logical vector to select samples that meet a requirement, e.g.
 #' # heterozygous samples only. Note that `is_het()` is useful here.
@@ -55,6 +56,8 @@
 #' # Or more simply:
 #' ae_hom('rsX019', 'rsX002', zygosity, ae, drop_na = FALSE)
 #'
+#' # Compare with the previous
+#' ae_hom('rsX019', 'rsX002', zygosity, ae, drop_na = TRUE)
 #'
 #' @export
 ae <- function(dae_snp, ae, samples = rep(TRUE, ncol(ae) - 1), drop_na = TRUE) {
@@ -74,13 +77,13 @@ ae <- function(dae_snp, ae, samples = rep(TRUE, ncol(ae) - 1), drop_na = TRUE) {
 ae_hom <- function(dae_snp, candidate_snp, zygosity, ae, drop_na = TRUE) {
 
   # `csnp_hom`: lgl indicating homozygous samples for the candidate snp
-  csnp_hom <- is_hom(zygosity = zygosity, snp = candidate_snp)
+  csnp_hom <- is_hom(zygosity = zygosity, snp = candidate_snp, na_as_false = FALSE)
 
   # `csnp_het`: lgl indicating heterozygous samples for the candidate snp
-  csnp_het <- is_het(zygosity = zygosity, snp = candidate_snp)
+  csnp_het <- is_het(zygosity = zygosity, snp = candidate_snp, na_as_false = FALSE)
 
   # `dsnp_het`: lgl indicating heterozygous samples for the dae snp
-  dsnp_het <- is_het(zygosity = zygosity, snp = dae_snp)
+  dsnp_het <- is_het(zygosity = zygosity, snp = dae_snp, na_as_false = FALSE)
 
   # `ae_hom`: dbl with allelic ratios of homozygous samples (candidate snp)
   # ae_hom <- as.numeric(ae[dae_snp][, 1 := NULL][, dsnp_het & csnp_hom, with = FALSE])
@@ -94,17 +97,17 @@ ae_hom <- function(dae_snp, candidate_snp, zygosity, ae, drop_na = TRUE) {
 ae_het <- function(dae_snp, candidate_snp, zygosity, ae, drop_na = TRUE) {
 
   # `csnp_hom`: lgl indicating homozygous samples for the candidate snp
-  csnp_hom <- is_hom(zygosity = zygosity, snp = candidate_snp)
+  csnp_hom <- is_hom(zygosity = zygosity, snp = candidate_snp, na_as_false = FALSE)
 
   # `csnp_het`: lgl indicating heterozygous samples for the candidate snp
-  csnp_het <- is_het(zygosity = zygosity, snp = candidate_snp)
+  csnp_het <- is_het(zygosity = zygosity, snp = candidate_snp, na_as_false = FALSE)
 
   # `dsnp_het`: lgl indicating heterozygous samples for the dae snp
-  dsnp_het <- is_het(zygosity = zygosity, snp = dae_snp)
+  dsnp_het <- is_het(zygosity = zygosity, snp = dae_snp, na_as_false = FALSE)
 
   # `ae_het`: dbl with allelic ratios of heterozygous samples (candidate snp)
   # ae_het <- as.numeric(ae[dae_snp][, 1 := NULL][, dsnp_het & csnp_het, with = FALSE])
-  ae_het <- ae(dae_snp = dae_snp, ae = ae, samples = dsnp_het & csnp_het)
+  ae_het <- ae(dae_snp = dae_snp, ae = ae, samples = dsnp_het & csnp_het, drop_na = drop_na)
 
   ae_het
 }

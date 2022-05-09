@@ -51,7 +51,8 @@ ae <- read_ae_ratios(file = daeqtlr_example("ae.csv"))
 ae('rsX019', ae = ae, drop_na = FALSE)
 
 # Select only the first 5 samples
-ae('rsX019', ae = ae, samples = 1:5, drop_na = FALSE)
+ae('rsX019', ae = ae, samples = 1:10, drop_na = FALSE)
+ae('rsX019', ae = ae, samples = 1:10, drop_na = TRUE)
 
 # Use a logical vector to select samples that meet a requirement, e.g.
 # heterozygous samples only. Note that `is_het()` is useful here.
@@ -72,5 +73,7 @@ ae(
 # Or more simply:
 ae_hom('rsX019', 'rsX002', zygosity, ae, drop_na = FALSE)
 
+# Compare with the previous
+ae_hom('rsX019', 'rsX002', zygosity, ae, drop_na = TRUE)
 
 }
