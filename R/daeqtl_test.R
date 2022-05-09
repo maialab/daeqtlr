@@ -160,11 +160,11 @@ daeqtl_test <-
     n_het <- length(ae_het)
 
     # Case 1
-    if(n_het < min_n_het) {
+    if(n_het <= min_n_het) {
       return(data.frame(pvalue = NA_real_, case = 1L))
     }
 
-    if(n_hom < min_n_hom) {
+    if(n_hom <= min_n_hom) {
       # Case 2
       if (!(all(ae_het >= dae_threshold) ||
             all(ae_het <= -dae_threshold))) {
