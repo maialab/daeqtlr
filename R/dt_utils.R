@@ -9,6 +9,7 @@
 #'   indicated in the first column and named \code{snp}. Remaining columns are
 #'   samples.
 #' @param snp String with SNP identifier.
+#' @param na_as_false Whether to return `FALSE` when the zygosity level is `NA`.
 #'
 #' @return A logical vector.
 #'
@@ -38,14 +39,25 @@
 #' setdiff(colnames(zygosity)[-1], c(homs, hets))
 #'
 #' @export
-is_hom <- function(zygosity, snp) {
+is_hom <- function(zygosity, snp, na_as_false = TRUE) {
   x <- zygosity[snp, mult = "first", nomatch = 0L][, 1 := NULL]
-  as.vector(x == 'hom' & !is.na(x))
+  if (na_as_false) {
+    lgl <- as.vector(x == 'hom' & !is.na(x))
+  } else {
+    lgl <- as.vector(x == 'hom')
+  }
+  return(lgl)
 }
 
 #' @rdname is_hom
 #' @export
-is_het <- function(zygosity, snp) {
+is_het <- function(zygosity, snp, na_as_false = TRUE) {
   x <- zygosity[snp, mult = "first", nomatch = 0L][, 1 := NULL]
-  as.vector(x == 'het' & !is.na(x))
+
+  if (na_as_false) {
+    lgl <- as.vector(x == 'het' & !is.na(x))
+  } else {
+    lgl <- as.vector(x == 'het')
+  }
+  return(lgl)
 }

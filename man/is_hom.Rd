@@ -5,9 +5,9 @@
 \alias{is_het}
 \title{Who are the homozygous/heterozygous samples?}
 \usage{
-is_hom(zygosity, snp)
+is_hom(zygosity, snp, na_as_false = TRUE)
 
-is_het(zygosity, snp)
+is_het(zygosity, snp, na_as_false = TRUE)
 }
 \arguments{
 \item{zygosity}{A data frame of zygosity levels: \code{"hom"} for homozygous or
@@ -16,6 +16,8 @@ indicated in the first column and named \code{snp}. Remaining columns are
 samples.}
 
 \item{snp}{String with SNP identifier.}
+
+\item{na_as_false}{Whether to return \code{FALSE} when the zygosity level is \code{NA}.}
 }
 \value{
 A logical vector.
