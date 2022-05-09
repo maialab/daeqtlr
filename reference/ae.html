@@ -123,8 +123,11 @@ samples.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [49]          NA          NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Select only the first 5 samples</span></span>
-<span class="r-in"><span class="fu">ae</span><span class="op">(</span><span class="st">'rsX019'</span>, ae <span class="op">=</span> <span class="va">ae</span>, samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, drop_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA NA NA NA NA</span>
+<span class="r-in"><span class="fu">ae</span><span class="op">(</span><span class="st">'rsX019'</span>, ae <span class="op">=</span> <span class="va">ae</span>, samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, drop_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]         NA         NA         NA         NA         NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] -0.7812126         NA         NA -0.1980128</span>
+<span class="r-in"><span class="fu">ae</span><span class="op">(</span><span class="st">'rsX019'</span>, ae <span class="op">=</span> <span class="va">ae</span>, samples <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, drop_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.7812126 -0.1980128</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use a logical vector to select samples that meet a requirement, e.g.</span></span>
 <span class="r-in"><span class="co"># heterozygous samples only. Note that `is_het()` is useful here.</span></span>
@@ -162,6 +165,10 @@ samples.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -0.78121260 -0.19801280          NA -0.92423460 -0.03798342  0.10446470</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] -0.23169140 -0.32567110 -0.15817040 -0.44861720  0.09732815</span>
 <span class="r-in"></span>
+<span class="r-in"><span class="co"># Compare with the previous</span></span>
+<span class="r-in"><span class="fu">ae_hom</span><span class="op">(</span><span class="st">'rsX019'</span>, <span class="st">'rsX002'</span>, <span class="va">zygosity</span>, <span class="va">ae</span>, drop_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -0.78121260 -0.19801280 -0.92423460 -0.03798342  0.10446470 -0.23169140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] -0.32567110 -0.15817040 -0.44861720  0.09732815</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
