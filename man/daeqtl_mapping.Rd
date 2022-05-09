@@ -30,7 +30,8 @@ columns are samples.}
 This function needs to have two named arguments \code{ae_hom} and \code{ae_het}.
 Extra arguments will be read from \code{...}.}
 
-\item{...}{Extra arguments passed on to the call of \code{test_fn()}.}
+\item{...}{Extra arguments passed on to the call of the function passed in
+\code{fn}.}
 
 \item{.extra_cols}{The number of extra columns you are creating with \code{fn}.}
 

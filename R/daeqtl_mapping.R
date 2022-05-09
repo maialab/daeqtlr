@@ -58,7 +58,8 @@ daeqtl_mapping_ <- function(snp_pairs, zygosity, ae, fn = daeqtl_test, ..., .ext
 #' @param fn A function implementing the statistical association approach.
 #'   This function needs to have two named arguments `ae_hom` and `ae_het`.
 #'   Extra arguments will be read from `...`.
-#' @param ... Extra arguments passed on to the call of `test_fn()`.
+#' @param ... Extra arguments passed on to the call of the function passed in
+#'   `fn`.
 #' @param .extra_cols The number of extra columns you are creating with `fn`.
 #' @param .n_chunks The number of chunks to divide `snp_pairs` for parallel
 #'   processing. If you are going to run in parallel set this number to be
