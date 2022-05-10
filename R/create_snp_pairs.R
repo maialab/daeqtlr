@@ -125,7 +125,7 @@ create_snp_pairs <- function(snp_table, window_size = 500000L) {
   data.table::setkeyv(csnp_dt, c('chromosome', 'start', 'end'))
 
   dt <- data.table::foverlaps(csnp_dt, dsnp_dt, type = 'within', nomatch = NULL)
-  dt2 <- dt[, c('dae_snp', 'candidate_snp', 'chromosome', 'dae_snp_position', 'candidate_snp_position')][dae_snp != candidate_snp]
+  dt2 <- dt[, c('dae_snp', 'candidate_snp', 'chromosome', 'dae_snp_position', 'candidate_snp_position')]
   data.table::setkeyv(dt2, c('chromosome', 'dae_snp_position'))
 
   dt2
